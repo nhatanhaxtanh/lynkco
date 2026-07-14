@@ -32,8 +32,8 @@ export function SiteFooter() {
               </p>
               <p className="flex items-center gap-3">
                 <Mail className="size-4 shrink-0" />
-                <a href={siteConfig.zalo} className="hover:text-white">
-                  Nhắn tin Zalo
+                <a href={`mailto:${siteConfig.email}`} className="hover:text-white">
+                  {siteConfig.email}
                 </a>
               </p>
             </address>

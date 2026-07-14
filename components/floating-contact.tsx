@@ -1,7 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Phone } from "lucide-react";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowUp, Phone } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 
 function FacebookIcon({ className }: { className?: string }) {
@@ -39,8 +40,36 @@ const contacts = [
 ];
 
 export function FloatingContact() {
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setShowScrollTop(window.scrollY > 500);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <div className="fixed bottom-5 right-4 z-50 flex flex-col gap-3 sm:bottom-6 sm:right-6">
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            type="button"
+            aria-label="Cuộn lên đầu trang"
+            title="Lên đầu trang"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            initial={{ opacity: 0, scale: 0, y: 12 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0, y: 12 }}
+            transition={{ type: "spring", stiffness: 260, damping: 18 }}
+            whileHover={{ scale: 1.12 }}
+            whileTap={{ scale: 0.94 }}
+            className="flex size-13 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-950 shadow-lg shadow-neutral-900/25 hover:bg-neutral-100"
+          >
+            <ArrowUp className="size-6" />
+          </motion.button>
+        )}
+      </AnimatePresence>
       {contacts.map((contact, index) => (
         <motion.a
           key={contact.href}
