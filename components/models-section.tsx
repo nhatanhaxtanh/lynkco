@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight, Armchair, Fuel, Gauge } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +9,49 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { CarSilhouette } from "@/components/car-silhouette";
 import { FadeIn } from "@/components/fade-in";
 import { cars, type Car } from "@/lib/cars";
+
+function CarThumbnail({ car }: { car: Car }) {
+  return (
+    <div className="relative aspect-[16/10] overflow-hidden bg-neutral-950">
+      {car.image ? (
+        <Image
+          src={car.image}
+          alt={`${car.name} — ${car.bodyType}`}
+          fill
+          sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+        />
+      ) : (
+        <>
+          {/* Placeholder khi chưa có ảnh thật */}
+          <span className="pointer-events-none absolute -right-2 -top-8 select-none text-[8rem] font-black leading-none text-white/[0.07]">
+            {car.code}
+          </span>
+          <CarSilhouette
+            variant={car.slug === "lynk-co-03-plus" ? "sedan" : "suv"}
+            className="absolute bottom-3 left-1/2 w-60 -translate-x-1/2 text-white/70 transition-transform duration-700 ease-out group-hover:scale-105"
+          />
+        </>
+      )}
+
+      {/* Lớp phủ giúp chip/badge luôn dễ đọc trên ảnh */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-neutral-950/60 via-transparent to-neutral-950/40" />
+
+      <span className="absolute left-4 top-4 rounded-full bg-white/15 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.15em] text-white backdrop-blur-md">
+        {car.bodyType}
+      </span>
+      {car.anticipated && (
+        <Badge className="absolute right-4 top-4 rounded-full bg-white text-neutral-950 hover:bg-white">
+          Sắp ra mắt
+        </Badge>
+      )}
+
+      <span className="pointer-events-none absolute bottom-3 right-4 select-none text-2xl font-black tracking-tight text-white/80">
+        {car.code}
+      </span>
+    </div>
+  );
+}
 
 function ModelCard({ car, index }: { car: Car; index: number }) {
   return (
@@ -24,29 +68,11 @@ function ModelCard({ car, index }: { car: Car; index: number }) {
       className="h-full"
     >
       <Card className="group flex h-full flex-col overflow-hidden rounded-3xl border-border/80 pt-0 shadow-none transition-shadow duration-300 hover:shadow-xl hover:shadow-neutral-900/10">
-        <div className="relative overflow-hidden bg-neutral-950 px-6 pb-4 pt-6">
-          <span className="pointer-events-none absolute -right-3 -top-7 select-none text-[7rem] font-black leading-none text-white/[0.08]">
-            {car.code}
-          </span>
-          <div className="flex items-start justify-between">
-            <span className="text-xs font-medium uppercase tracking-[0.2em] text-white/50">
-              {car.bodyType}
-            </span>
-            {car.anticipated && (
-              <Badge className="rounded-full bg-white text-neutral-950 hover:bg-white">
-                Sắp ra mắt
-              </Badge>
-            )}
-          </div>
-          <CarSilhouette
-            variant={car.slug === "lynk-co-03-plus" ? "sedan" : "suv"}
-            className="mx-auto mt-3 w-56 text-white transition-transform duration-500 group-hover:scale-105"
-          />
-        </div>
+        <CarThumbnail car={car} />
 
         <CardHeader className="pb-0">
           <h3 className="text-xl font-bold tracking-tight">{car.name}</h3>
-          <p className="text-sm leading-relaxed text-muted-foreground">
+          <p className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">
             {car.tagline}
           </p>
         </CardHeader>
@@ -66,7 +92,7 @@ function ModelCard({ car, index }: { car: Car; index: number }) {
           </span>
         </CardContent>
 
-        <CardFooter className="mt-auto flex items-end justify-between pt-2">
+        <CardFooter className="mt-auto flex items-end justify-between border-t border-border/60 pt-4">
           <div>
             <p className="text-xs uppercase tracking-wider text-muted-foreground">
               Giá từ{car.anticipated ? " (dự kiến)" : ""}
@@ -114,7 +140,7 @@ export function ModelsSection() {
           </p>
         </FadeIn>
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {cars.map((car, index) => (
             <ModelCard key={car.slug} car={car} index={index} />
           ))}

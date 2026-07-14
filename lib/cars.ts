@@ -10,6 +10,12 @@ export type Car = {
   seats: string;
   price: number;
   priceDisplay: string;
+  /**
+   * Ảnh thumbnail của xe: đặt file vào thư mục public/cars/
+   * rồi khai báo ví dụ: image: "/cars/lynk-co-01.jpg"
+   * Chưa có ảnh thì bỏ trống — card sẽ hiển thị placeholder.
+   */
+  image?: string;
   anticipated?: boolean;
   featured?: boolean;
 };

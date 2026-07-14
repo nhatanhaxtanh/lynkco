@@ -31,6 +31,7 @@ npm run build    # build production
 |---|---|
 | Hotline, địa chỉ, link Zalo/Facebook | `lib/site-config.ts` |
 | Danh sách mẫu xe & giá | `lib/cars.ts` |
+| Ảnh thumbnail xe | Đặt file vào `public/cars/` rồi khai báo `image: "/cars/ten-file.jpg"` cho từng xe trong `lib/cars.ts` (chưa có ảnh sẽ hiển thị placeholder) |
 | Form lái thử (nối API/CRM) | `components/test-drive-form.tsx` |
 
 > Giá xe tham khảo từ đại lý, cập nhật tháng 7/2026.
