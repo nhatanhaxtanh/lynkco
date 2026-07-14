@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Armchair, Fuel, Gauge } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -12,7 +13,11 @@ import { cars, type Car } from "@/lib/cars";
 
 function CarThumbnail({ car }: { car: Car }) {
   return (
-    <div className="relative aspect-[16/10] overflow-hidden bg-neutral-950">
+    <Link
+      href={`/xe/${car.slug}`}
+      aria-label={`Xem chi tiết ${car.name}`}
+      className="relative block aspect-[16/10] overflow-hidden bg-neutral-950"
+    >
       {car.image ? (
         <Image
           src={car.image}
@@ -49,7 +54,7 @@ function CarThumbnail({ car }: { car: Car }) {
       <span className="pointer-events-none absolute bottom-3 right-4 select-none text-2xl font-black tracking-tight text-white/80">
         {car.code}
       </span>
-    </div>
+    </Link>
   );
 }
 
@@ -71,7 +76,11 @@ function ModelCard({ car, index }: { car: Car; index: number }) {
         <CarThumbnail car={car} />
 
         <CardHeader className="pb-0">
-          <h3 className="text-xl font-bold tracking-tight">{car.name}</h3>
+          <h3 className="text-xl font-bold tracking-tight">
+            <Link href={`/xe/${car.slug}`} className="hover:underline">
+              {car.name}
+            </Link>
+          </h3>
           <p className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">
             {car.tagline}
           </p>
@@ -106,13 +115,16 @@ function ModelCard({ car, index }: { car: Car; index: number }) {
           </div>
           <Button
             render={
-              <a href="#lai-thu" aria-label={`Đăng ký lái thử ${car.name}`} />
+              <Link
+                href={`/xe/${car.slug}`}
+                aria-label={`Xem chi tiết ${car.name}`}
+              />
             }
             nativeButton={false}
             size="sm"
             className="rounded-full px-4"
           >
-            Lái thử
+            Chi tiết
             <ArrowRight className="size-3.5" />
           </Button>
         </CardFooter>

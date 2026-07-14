@@ -19,9 +19,9 @@ import { FadeIn } from "@/components/fade-in";
 import { cars } from "@/lib/cars";
 import { siteConfig } from "@/lib/site-config";
 
-export function TestDriveForm() {
+export function TestDriveForm({ defaultModel }: { defaultModel?: string }) {
   const [submitting, setSubmitting] = useState(false);
-  const [model, setModel] = useState<string>("");
+  const [model, setModel] = useState<string>(defaultModel ?? "");
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -49,7 +49,7 @@ export function TestDriveForm() {
     setSubmitting(false);
 
     form.reset();
-    setModel("");
+    setModel(defaultModel ?? "");
     toast.success("Đăng ký lái thử thành công!", {
       description: `Cảm ơn ${name}, tư vấn viên sẽ liên hệ bạn qua số ${phone} trong 24h.`,
     });

@@ -15,12 +15,12 @@ import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { href: "#mau-xe", label: "Mẫu xe" },
-  { href: "#uu-diem", label: "Ưu điểm" },
-  { href: "#ban-giao", label: "Lễ bàn giao" },
-  { href: "#showroom", label: "Showroom" },
-  { href: "#lai-thu", label: "Đăng ký lái thử" },
-  { href: "#lien-he", label: "Liên hệ" },
+  { href: "/#mau-xe", label: "Mẫu xe" },
+  { href: "/#uu-diem", label: "Ưu điểm" },
+  { href: "/#ban-giao", label: "Lễ bàn giao" },
+  { href: "/#showroom", label: "Showroom" },
+  { href: "/#lai-thu", label: "Đăng ký lái thử" },
+  { href: "/#lien-he", label: "Liên hệ" },
 ];
 
 export function SiteHeader() {
@@ -45,7 +45,7 @@ export function SiteHeader() {
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link
-          href="#"
+          href="/"
           className={cn(
             "text-lg font-black tracking-[0.2em] transition-colors",
             scrolled ? "text-foreground" : "text-white"
