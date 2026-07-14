@@ -32,6 +32,7 @@ export const cars: Car[] = [
     seats: "5 chỗ",
     price: 919_000_000,
     priceDisplay: "919 triệu",
+    image: "/cars/lynk-co-01.webp",
     featured: true,
   },
   {
@@ -45,6 +46,7 @@ export const cars: Car[] = [
     seats: "5 chỗ",
     price: 899_000_000,
     priceDisplay: "899 triệu",
+    image: "/cars/lynk-co-02.jpg",
     anticipated: true,
   },
   {
@@ -58,6 +60,7 @@ export const cars: Car[] = [
     seats: "5 chỗ",
     price: 1_899_000_000,
     priceDisplay: "1,899 tỷ",
+    image: "/cars/lynk-co-03-plus.jpg",
   },
   {
     slug: "lynk-co-05",
