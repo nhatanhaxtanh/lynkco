@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,6 +16,8 @@ type Slide = {
   description: string;
   price?: string;
   silhouette: "suv" | "sedan";
+  /** Ảnh thật của xe (đặt trong public/cars/); chưa có thì hiển thị silhouette */
+  image?: string;
 };
 
 const slides: Slide[] = [
@@ -46,6 +49,7 @@ const slides: Slide[] = [
       "SUV cỡ D với công nghệ hybrid EM-P tiên tiến — mạnh mẽ khi cần, tiết kiệm mọi hành trình.",
     price: "Giá từ 1,299 tỷ",
     silhouette: "suv",
+    image: "/cars/lynk-co-08.webp",
   },
   {
     code: "900",
@@ -106,6 +110,22 @@ export function Hero() {
         thử miễn phí
       </h1>
 
+      {/* Preload ảnh các slide để không bị nháy khi chuyển */}
+      <div className="hidden" aria-hidden="true">
+        {slides
+          .filter((s) => s.image)
+          .map((s) => (
+            <Image
+              key={s.image}
+              src={s.image!}
+              alt=""
+              width={512}
+              height={341}
+              priority
+            />
+          ))}
+      </div>
+
       {/* Nền trang trí */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -top-40 left-1/2 h-[32rem] w-[52rem] -translate-x-1/2 rounded-full bg-white/[0.06] blur-3xl" />
@@ -133,24 +153,49 @@ export function Hero() {
             </motion.span>
           </AnimatePresence>
 
-          {/* Silhouette xe */}
+          {/* Hình ảnh xe: ảnh thật nếu có, không thì silhouette */}
           <AnimatePresence mode="popLayout">
-            <motion.div
-              key={`car-${index}`}
-              initial={{ opacity: 0, x: 120 }}
-              animate={{
-                opacity: 1,
-                x: 0,
-                transition: { duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] },
-              }}
-              exit={{ opacity: 0, x: -80, transition: { duration: 0.35 } }}
-              className="pointer-events-none absolute -bottom-2 right-[-6rem] hidden w-[42rem] lg:block"
-            >
-              <CarSilhouette
-                variant={slide.silhouette}
-                className="w-full text-white/20"
-              />
-            </motion.div>
+            {slide.image ? (
+              <motion.div
+                key={`car-${index}`}
+                initial={{ opacity: 0, x: 120 }}
+                animate={{
+                  opacity: 1,
+                  x: 0,
+                  transition: { duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] },
+                }}
+                exit={{ opacity: 0, x: -80, transition: { duration: 0.35 } }}
+                className="pointer-events-none absolute right-0 top-1/2 hidden -translate-y-[55%] lg:block"
+              >
+                <div className="relative aspect-[3/2] w-[24rem] overflow-hidden rounded-3xl shadow-2xl shadow-black/60 ring-1 ring-white/15 xl:w-[32rem]">
+                  <Image
+                    src={slide.image}
+                    alt={slide.title}
+                    fill
+                    sizes="(min-width: 1280px) 32rem, (min-width: 1024px) 24rem, 0px"
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/45 via-transparent to-transparent" />
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key={`car-${index}`}
+                initial={{ opacity: 0, x: 120 }}
+                animate={{
+                  opacity: 1,
+                  x: 0,
+                  transition: { duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] },
+                }}
+                exit={{ opacity: 0, x: -80, transition: { duration: 0.35 } }}
+                className="pointer-events-none absolute -bottom-2 right-[-6rem] hidden w-[42rem] lg:block"
+              >
+                <CarSilhouette
+                  variant={slide.silhouette}
+                  className="w-full text-white/20"
+                />
+              </motion.div>
+            )}
           </AnimatePresence>
 
           {/* Nội dung slide */}
