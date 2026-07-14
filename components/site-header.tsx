@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 const navItems = [
   { href: "#mau-xe", label: "Mẫu xe" },
   { href: "#uu-diem", label: "Ưu điểm" },
+  { href: "#ban-giao", label: "Lễ bàn giao" },
   { href: "#lai-thu", label: "Đăng ký lái thử" },
   { href: "#lien-he", label: "Liên hệ" },
 ];

@@ -1,3 +1,4 @@
+import { DeliverySection } from "@/components/delivery-section";
 import { FeaturesSection } from "@/components/features-section";
 import { FloatingContact } from "@/components/floating-contact";
 import { Hero } from "@/components/hero";
@@ -76,6 +77,7 @@ export default function HomePage() {
         <Hero />
         <ModelsSection />
         <FeaturesSection />
+        <DeliverySection />
         <TestDriveForm />
       </main>
       <SiteFooter />

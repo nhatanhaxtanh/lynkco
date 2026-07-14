@@ -75,6 +75,11 @@ export function SiteFooter() {
                 </a>
               </li>
               <li>
+                <a href="#ban-giao" className="hover:text-white">
+                  Lễ bàn giao xe
+                </a>
+              </li>
+              <li>
                 <a
                   href={siteConfig.facebook}
                   target="_blank"
