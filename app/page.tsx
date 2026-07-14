@@ -4,6 +4,7 @@ import { FloatingContact } from "@/components/floating-contact";
 import { Hero } from "@/components/hero";
 import { ModelsSection } from "@/components/models-section";
 import { SiteFooter } from "@/components/site-footer";
+import { ShowroomSection } from "@/components/showroom-section";
 import { SiteHeader } from "@/components/site-header";
 import { TestDriveForm } from "@/components/test-drive-form";
 import { cars, formatVnd } from "@/lib/cars";
@@ -78,6 +79,7 @@ export default function HomePage() {
         <ModelsSection />
         <FeaturesSection />
         <DeliverySection />
+        <ShowroomSection />
         <TestDriveForm />
       </main>
       <SiteFooter />

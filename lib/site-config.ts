@@ -7,6 +7,8 @@ export const siteConfig = {
   hotline: "0936627339",
   hotlineDisplay: "0936 627 339",
   address: "220 Nguyễn Hữu Cảnh, P. Thạnh Mỹ Tây, TP. Hồ Chí Minh",
+  mapsUrl:
+    "https://www.google.com/maps/search/?api=1&query=Lynk+%26+Co+220+Nguy%E1%BB%85n+H%E1%BB%AFu+C%E1%BA%A3nh+TP+HCM",
   openingHours: "8:00 – 19:00 (Thứ 2 – Chủ nhật)",
   facebook: "https://www.facebook.com/lynkcocentersaigon",
   zalo: "https://zalo.me/0936627339",

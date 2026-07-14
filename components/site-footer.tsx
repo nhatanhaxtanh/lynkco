@@ -80,6 +80,11 @@ export function SiteFooter() {
                 </a>
               </li>
               <li>
+                <a href="#showroom" className="hover:text-white">
+                  Showroom
+                </a>
+              </li>
+              <li>
                 <a
                   href={siteConfig.facebook}
                   target="_blank"
