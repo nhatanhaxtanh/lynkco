@@ -23,7 +23,7 @@ function DeliveryTile({ item, index }: { item: Delivery; index: number }) {
       {item.image ? (
         <Image
           src={item.image}
-          alt={item.caption}
+          alt="Lễ bàn giao xe Lynk & Co tại showroom"
           fill
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           className={`object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06] ${item.objectPosition ?? ""}`}
@@ -73,11 +73,7 @@ export function DeliverySection() {
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {deliveries.map((item, index) => (
-            <DeliveryTile
-              key={item.image ?? `${item.caption}-${index}`}
-              item={item}
-              index={index}
-            />
+            <DeliveryTile key={item.image ?? index} item={item} index={index} />
           ))}
         </div>
       </div>
