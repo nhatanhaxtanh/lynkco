@@ -82,6 +82,7 @@ export const cars: Car[] = [
     seats: "5 chỗ",
     price: 679_000_000,
     priceDisplay: "679 triệu",
+    image: "/cars/lynk-co-06.jpg",
     featured: true,
   },
   {

@@ -39,6 +39,7 @@ const slides: Slide[] = [
       "Động cơ 1.5L Turbo 181 mã lực, cá tính Scandinavia trong từng đường nét. Khởi điểm hấp dẫn nhất dải sản phẩm.",
     price: "Giá từ 679 triệu",
     silhouette: "suv",
+    image: "/cars/lynk-co-06.jpg",
   },
   {
     code: "08",
