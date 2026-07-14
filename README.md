@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lynk & Co Sài Gòn — Website giới thiệu & báo giá xe
 
-## Getting Started
+Landing page chuẩn SEO cho đại lý Lynk & Co: bảng giá 8 mẫu xe, form đăng ký lái thử, nút liên hệ nhanh (Hotline / Zalo / Facebook). Tone trắng–đen hiện đại, bo góc mềm mại.
 
-First, run the development server:
+## Công nghệ
+
+- [Next.js 16](https://nextjs.org) (App Router, Turbopack, static prerender)
+- [Tailwind CSS v4](https://tailwindcss.com) + [shadcn/ui](https://ui.shadcn.com) (Base UI)
+- [Framer Motion](https://www.framer.com/motion/) — animation hero, card, floating buttons
+- TypeScript
+
+## SEO
+
+- Metadata đầy đủ (title template, description, keywords, Open Graph, Twitter card, canonical)
+- JSON-LD structured data: `AutoDealer` + `ItemList` các mẫu xe kèm giá
+- `sitemap.xml`, `robots.txt` tự sinh qua Metadata API
+- OG image render động (`app/opengraph-image.tsx`)
+- HTML ngữ nghĩa, `lang="vi"`, font Inter hỗ trợ tiếng Việt
+
+## Chạy dự án
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # build production
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tuỳ chỉnh nhanh
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Nội dung | File |
+|---|---|
+| Hotline, địa chỉ, link Zalo/Facebook | `lib/site-config.ts` |
+| Danh sách mẫu xe & giá | `lib/cars.ts` |
+| Form lái thử (nối API/CRM) | `components/test-drive-form.tsx` |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> Giá xe tham khảo từ đại lý, cập nhật tháng 7/2026.
