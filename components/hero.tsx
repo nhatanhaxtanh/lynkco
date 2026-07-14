@@ -1,110 +1,260 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowDown, ArrowRight } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CarSilhouette } from "@/components/car-silhouette";
+import { cn } from "@/lib/utils";
 
-const container = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
+type Slide = {
+  code: string;
+  eyebrow: string;
+  title: string;
+  highlight: string;
+  description: string;
+  price?: string;
+  silhouette: "suv" | "sedan";
 };
 
-const item = {
-  hidden: { opacity: 0, y: 28 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] as const },
+const slides: Slide[] = [
+  {
+    code: "LYNK",
+    eyebrow: "Đại lý chính hãng tại TP. Hồ Chí Minh",
+    title: "LYNK & CO",
+    highlight: "Công nghệ tối tân. Thiết kế châu Âu.",
+    description:
+      "Trọn bộ 8 mẫu xe từ SUV đô thị, sedan hiệu suất cao đến flagship hybrid. Cập nhật giá lăn bánh và đăng ký lái thử ngay hôm nay.",
+    silhouette: "suv",
   },
-};
-
-const stats = [
-  { value: "8+", label: "Mẫu xe đa dạng" },
-  { value: "679tr", label: "Giá khởi điểm" },
-  { value: "5 năm", label: "Bảo hành chính hãng" },
-  { value: "24/7", label: "Hỗ trợ khách hàng" },
+  {
+    code: "06",
+    eyebrow: "Lựa chọn dẫn đầu phân khúc",
+    title: "LYNK & CO 06",
+    highlight: "SUV cỡ B năng động",
+    description:
+      "Động cơ 1.5L Turbo 181 mã lực, cá tính Scandinavia trong từng đường nét. Khởi điểm hấp dẫn nhất dải sản phẩm.",
+    price: "Giá từ 679 triệu",
+    silhouette: "suv",
+  },
+  {
+    code: "08",
+    eyebrow: "Plug-in Hybrid EM-P",
+    title: "LYNK & CO 08",
+    highlight: "345 mã lực, êm ái vượt trội",
+    description:
+      "SUV cỡ D với công nghệ hybrid EM-P tiên tiến — mạnh mẽ khi cần, tiết kiệm mọi hành trình.",
+    price: "Giá từ 1,299 tỷ",
+    silhouette: "suv",
+  },
+  {
+    code: "900",
+    eyebrow: "Flagship sắp ra mắt",
+    title: "LYNK & CO 900",
+    highlight: "Đẳng cấp tối thượng",
+    description:
+      "SUV flagship 6 chỗ với sức mạnh trên 500 mã lực — công nghệ và sang trọng không thỏa hiệp.",
+    price: "Dự kiến 3,069 tỷ",
+    silhouette: "suv",
+  },
 ];
 
+const AUTOPLAY_MS = 6000;
+
+const contentVariants = {
+  enter: (direction: number) => ({ opacity: 0, x: 64 * direction }),
+  center: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.55, ease: [0.21, 0.47, 0.32, 0.98] as const },
+  },
+  exit: (direction: number) => ({
+    opacity: 0,
+    x: -64 * direction,
+    transition: { duration: 0.3, ease: "easeIn" as const },
+  }),
+};
+
 export function Hero() {
+  const [[index, direction], setState] = useState<[number, number]>([0, 1]);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const goTo = useCallback((next: number, dir: number) => {
+    setState([(next + slides.length) % slides.length, dir]);
+  }, []);
+
+  const next = useCallback(() => goTo(index + 1, 1), [index, goTo]);
+  const prev = useCallback(() => goTo(index - 1, -1), [index, goTo]);
+
+  useEffect(() => {
+    timerRef.current = setInterval(next, AUTOPLAY_MS);
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [next]);
+
+  const slide = slides[index];
+
   return (
-    <section className="relative overflow-hidden bg-neutral-950 text-white">
+    <section
+      className="relative overflow-hidden bg-neutral-950 text-white"
+      aria-roledescription="carousel"
+      aria-label="Giới thiệu Lynk & Co"
+    >
+      <h1 className="sr-only">
+        Lynk &amp; Co Sài Gòn — Bảng giá xe Lynk &amp; Co mới nhất, đăng ký lái
+        thử miễn phí
+      </h1>
+
       {/* Nền trang trí */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -top-40 left-1/2 h-[32rem] w-[52rem] -translate-x-1/2 rounded-full bg-white/[0.06] blur-3xl" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:5rem_100%]" />
-        <CarSilhouette className="absolute -bottom-8 right-[-8rem] hidden w-[46rem] text-white/[0.07] lg:block" />
       </div>
 
-      <motion.div
-        className="relative mx-auto flex max-w-6xl flex-col items-start px-4 pb-20 pt-36 sm:px-6 md:pb-28 md:pt-44"
-        variants={container}
-        initial="hidden"
-        animate="visible"
-      >
-        <motion.p
-          variants={item}
-          className="mb-5 rounded-full border border-white/20 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.25em] text-white/80"
-        >
-          Đại lý chính hãng tại TP. Hồ Chí Minh
-        </motion.p>
+      <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="relative flex min-h-[38rem] flex-col justify-center pb-24 pt-28 md:min-h-[42rem] md:pt-32">
+          {/* Chữ số hiệu khổng lồ phía sau */}
+          <AnimatePresence mode="popLayout" custom={direction}>
+            <motion.span
+              key={`code-${index}`}
+              custom={direction}
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+                transition: { duration: 0.7, ease: "easeOut" },
+              }}
+              exit={{ opacity: 0, transition: { duration: 0.3 } }}
+              aria-hidden="true"
+              className="pointer-events-none absolute right-0 top-1/2 hidden -translate-y-1/2 select-none text-[16rem] font-black leading-none tracking-tighter text-transparent lg:block xl:text-[20rem] [-webkit-text-stroke:2px_rgba(255,255,255,0.14)]"
+            >
+              {slide.code}
+            </motion.span>
+          </AnimatePresence>
 
-        <motion.h1
-          variants={item}
-          className="max-w-3xl text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl md:text-7xl"
-        >
-          LYNK &amp; CO
-          <span className="mt-3 block text-2xl font-semibold text-white/70 sm:text-3xl md:text-4xl">
-            Công nghệ tối tân. Thiết kế châu Âu.
-          </span>
-        </motion.h1>
+          {/* Silhouette xe */}
+          <AnimatePresence mode="popLayout">
+            <motion.div
+              key={`car-${index}`}
+              initial={{ opacity: 0, x: 120 }}
+              animate={{
+                opacity: 1,
+                x: 0,
+                transition: { duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] },
+              }}
+              exit={{ opacity: 0, x: -80, transition: { duration: 0.35 } }}
+              className="pointer-events-none absolute -bottom-2 right-[-6rem] hidden w-[42rem] lg:block"
+            >
+              <CarSilhouette
+                variant={slide.silhouette}
+                className="w-full text-white/20"
+              />
+            </motion.div>
+          </AnimatePresence>
 
-        <motion.p
-          variants={item}
-          className="mt-6 max-w-xl text-base leading-relaxed text-white/60 sm:text-lg"
-        >
-          Khám phá trọn bộ 8 mẫu xe Lynk &amp; Co — từ SUV đô thị, sedan hiệu
-          suất cao đến flagship hybrid. Cập nhật giá lăn bánh và đăng ký lái
-          thử ngay hôm nay.
-        </motion.p>
+          {/* Nội dung slide */}
+          <AnimatePresence mode="popLayout" custom={direction}>
+            <motion.div
+              key={index}
+              custom={direction}
+              variants={contentVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={(_, info) => {
+                if (info.offset.x < -80) next();
+                else if (info.offset.x > 80) prev();
+              }}
+              className="relative z-10 max-w-2xl cursor-grab active:cursor-grabbing"
+            >
+              <p className="inline-block rounded-full border border-white/20 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.25em] text-white/80">
+                {slide.eyebrow}
+              </p>
 
-        <motion.div variants={item} className="mt-9 flex flex-wrap gap-4">
-          <Button
-            render={<a href="#mau-xe" />}
-            nativeButton={false}
-            size="lg"
-            className="h-12 rounded-full bg-white px-7 text-base font-semibold text-neutral-950 hover:bg-white/85"
-          >
-            Khám phá mẫu xe
-            <ArrowDown className="size-4" />
-          </Button>
-          <Button
-            render={<a href="#lai-thu" />}
-            nativeButton={false}
-            size="lg"
-            variant="outline"
-            className="h-12 rounded-full border-white/30 bg-transparent px-7 text-base font-semibold text-white hover:bg-white/10 hover:text-white"
-          >
-            Đăng ký lái thử
-            <ArrowRight className="size-4" />
-          </Button>
-        </motion.div>
+              <p className="mt-6 text-4xl font-black leading-[1.02] tracking-tight sm:text-6xl md:text-7xl">
+                {slide.title}
+              </p>
+              <p className="mt-3 bg-gradient-to-r from-white via-white to-white/40 bg-clip-text text-2xl font-bold text-transparent sm:text-3xl md:text-4xl">
+                {slide.highlight}
+              </p>
 
-        <motion.dl
-          variants={item}
-          className="mt-16 grid w-full grid-cols-2 gap-6 border-t border-white/10 pt-8 sm:grid-cols-4"
-        >
-          {stats.map((stat) => (
-            <div key={stat.label}>
-              <dt className="sr-only">{stat.label}</dt>
-              <dd className="text-2xl font-black sm:text-3xl">{stat.value}</dd>
-              <dd className="mt-1 text-xs uppercase tracking-wider text-white/50">
-                {stat.label}
-              </dd>
+              <p className="mt-6 max-w-xl text-base leading-relaxed text-white/60 sm:text-lg">
+                {slide.description}
+              </p>
+
+              {slide.price && (
+                <p className="mt-5 inline-block rounded-full bg-white px-5 py-2 text-sm font-bold text-neutral-950">
+                  {slide.price}
+                </p>
+              )}
+
+              <div className="mt-8 flex flex-wrap gap-4">
+                <Button
+                  render={<a href="#mau-xe" />}
+                  nativeButton={false}
+                  size="lg"
+                  className="h-12 rounded-full bg-white px-7 text-base font-semibold text-neutral-950 hover:bg-white/85"
+                >
+                  Khám phá mẫu xe
+                </Button>
+                <Button
+                  render={<a href="#lai-thu" />}
+                  nativeButton={false}
+                  size="lg"
+                  variant="outline"
+                  className="h-12 rounded-full border-white/30 bg-transparent px-7 text-base font-semibold text-white hover:bg-white/10 hover:text-white"
+                >
+                  Đăng ký lái thử
+                  <ArrowRight className="size-4" />
+                </Button>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Điều hướng slider */}
+          <div className="absolute bottom-8 left-4 right-4 z-10 flex items-center justify-between sm:left-6 sm:right-6">
+            <div className="flex items-center gap-2.5">
+              {slides.map((s, i) => (
+                <button
+                  key={s.code}
+                  type="button"
+                  onClick={() => goTo(i, i > index ? 1 : -1)}
+                  aria-label={`Chuyển đến slide ${s.title}`}
+                  aria-current={i === index}
+                  className={cn(
+                    "h-1.5 rounded-full transition-all duration-300",
+                    i === index
+                      ? "w-8 bg-white"
+                      : "w-3 bg-white/30 hover:bg-white/60"
+                  )}
+                />
+              ))}
             </div>
-          ))}
-        </motion.dl>
-      </motion.div>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={prev}
+                aria-label="Slide trước"
+                className="flex size-11 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:bg-white hover:text-neutral-950"
+              >
+                <ChevronLeft className="size-5" />
+              </button>
+              <button
+                type="button"
+                onClick={next}
+                aria-label="Slide sau"
+                className="flex size-11 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:bg-white hover:text-neutral-950"
+              >
+                <ChevronRight className="size-5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }
