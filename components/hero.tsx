@@ -18,6 +18,10 @@ type Slide = {
   silhouette: "suv" | "sedan";
   /** Ảnh thật của xe (đặt trong public/cars/); chưa có thì hiển thị silhouette */
   image?: string;
+  /** Video nền full-bleed (ưu tiên hơn image nếu có) */
+  video?: string;
+  /** Ảnh hiển thị trong lúc video đang tải */
+  poster?: string;
 };
 
 const slides: Slide[] = [
@@ -29,6 +33,8 @@ const slides: Slide[] = [
     description:
       "Trọn bộ 8 mẫu xe từ SUV đô thị, sedan hiệu suất cao đến flagship hybrid. Cập nhật giá lăn bánh và đăng ký lái thử ngay hôm nay.",
     silhouette: "suv",
+    video: "/videos/hero-brand.mp4",
+    poster: "/videos/hero-brand-poster.jpg",
   },
   {
     code: "06",
@@ -134,9 +140,9 @@ export function Hero() {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:5rem_100%]" />
       </div>
 
-      {/* Ảnh nền full-bleed cho slide có ảnh thật */}
+      {/* Nền full-bleed (video hoặc ảnh thật) cho slide */}
       <AnimatePresence mode="popLayout">
-        {slide.image && (
+        {(slide.video || slide.image) && (
           <motion.div
             key={`bg-${index}`}
             initial={{ opacity: 0, scale: 1.06 }}
@@ -148,14 +154,27 @@ export function Hero() {
             exit={{ opacity: 0, transition: { duration: 0.4 } }}
             className="pointer-events-none absolute inset-0"
           >
-            <Image
-              src={slide.image}
-              alt=""
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover object-[62%_center]"
-            />
+            {slide.video ? (
+              <video
+                src={slide.video}
+                poster={slide.poster}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                className="absolute inset-0 size-full object-cover"
+              />
+            ) : (
+              <Image
+                src={slide.image!}
+                alt=""
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover object-[62%_center]"
+              />
+            )}
             {/* Gradient tối để chữ trắng luôn đọc rõ */}
             <div className="absolute inset-0 bg-gradient-to-r from-neutral-950/95 via-neutral-950/65 to-neutral-950/25" />
             <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/85 via-transparent to-neutral-950/50" />
@@ -165,9 +184,9 @@ export function Hero() {
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <div className="relative flex min-h-[max(38rem,100svh)] flex-col justify-center pb-24 pt-28 md:pt-32">
-          {/* Chữ số hiệu khổng lồ phía sau (ẩn khi slide dùng ảnh nền) */}
+          {/* Chữ số hiệu khổng lồ phía sau (ẩn khi slide dùng nền video/ảnh) */}
           <AnimatePresence mode="popLayout" custom={direction}>
-            {!slide.image && (
+            {!slide.image && !slide.video && (
               <motion.span
                 key={`code-${index}`}
                 custom={direction}
@@ -188,7 +207,7 @@ export function Hero() {
 
           {/* Silhouette xe cho slide chưa có ảnh thật */}
           <AnimatePresence mode="popLayout">
-            {!slide.image && (
+            {!slide.image && !slide.video && (
               <motion.div
                 key={`car-${index}`}
                 initial={{ opacity: 0, x: 120 }}
