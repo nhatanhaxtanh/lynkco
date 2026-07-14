@@ -85,6 +85,11 @@ export function SiteFooter() {
                 </a>
               </li>
               <li>
+                <a href="/#tin-tuc" className="hover:text-white">
+                  Tin tức &amp; Sự kiện
+                </a>
+              </li>
+              <li>
                 <a
                   href={siteConfig.facebook}
                   target="_blank"

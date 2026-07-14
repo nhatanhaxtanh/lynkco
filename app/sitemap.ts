@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { cars } from "@/lib/cars";
+import { newsPosts } from "@/lib/news";
 import { siteConfig } from "@/lib/site-config";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -15,6 +16,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "weekly" as const,
       priority: 0.8,
+    })),
+    ...newsPosts.map((post) => ({
+      url: `${siteConfig.url}/tin-tuc/${post.slug}`,
+      lastModified: new Date(post.date),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
     })),
   ];
 }

@@ -19,6 +19,7 @@ const navItems = [
   { href: "/#uu-diem", label: "Ưu điểm" },
   { href: "/#ban-giao", label: "Lễ bàn giao" },
   { href: "/#showroom", label: "Showroom" },
+  { href: "/#tin-tuc", label: "Tin tức" },
   { href: "/#lai-thu", label: "Đăng ký lái thử" },
   { href: "/#lien-he", label: "Liên hệ" },
 ];
