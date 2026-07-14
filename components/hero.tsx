@@ -162,7 +162,7 @@ export function Hero() {
       </AnimatePresence>
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="relative flex min-h-[38rem] flex-col justify-center pb-24 pt-28 md:min-h-[42rem] md:pt-32">
+        <div className="relative flex min-h-[max(38rem,100svh)] flex-col justify-center pb-24 pt-28 md:pt-32">
           {/* Chữ số hiệu khổng lồ phía sau (ẩn khi slide dùng ảnh nền) */}
           <AnimatePresence mode="popLayout" custom={direction}>
             {!slide.image && (
