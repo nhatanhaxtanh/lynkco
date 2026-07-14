@@ -70,6 +70,7 @@ export function SiteHeader() {
         <div className="flex items-center gap-3">
           <Button
             render={<a href={`tel:${siteConfig.hotline}`} />}
+            nativeButton={false}
             className="hidden rounded-full px-5 md:inline-flex"
             variant={scrolled ? "default" : "secondary"}
           >
@@ -114,6 +115,7 @@ export function SiteHeader() {
                 ))}
                 <Button
                   render={<a href={`tel:${siteConfig.hotline}`} />}
+                  nativeButton={false}
                   className="mt-4 rounded-full"
                 >
                   <Phone className="size-4" />

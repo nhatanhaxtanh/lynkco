@@ -82,6 +82,7 @@ function ModelCard({ car, index }: { car: Car; index: number }) {
             render={
               <a href="#lai-thu" aria-label={`Đăng ký lái thử ${car.name}`} />
             }
+            nativeButton={false}
             size="sm"
             className="rounded-full px-4"
           >

@@ -71,6 +71,7 @@ export function Hero() {
         <motion.div variants={item} className="mt-9 flex flex-wrap gap-4">
           <Button
             render={<a href="#mau-xe" />}
+            nativeButton={false}
             size="lg"
             className="h-12 rounded-full bg-white px-7 text-base font-semibold text-neutral-950 hover:bg-white/85"
           >
@@ -79,6 +80,7 @@ export function Hero() {
           </Button>
           <Button
             render={<a href="#lai-thu" />}
+            nativeButton={false}
             size="lg"
             variant="outline"
             className="h-12 rounded-full border-white/30 bg-transparent px-7 text-base font-semibold text-white hover:bg-white/10 hover:text-white"
