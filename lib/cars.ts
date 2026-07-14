@@ -73,6 +73,7 @@ export const cars: Car[] = [
     seats: "5 chỗ",
     price: 1_599_000_000,
     priceDisplay: "1,599 tỷ",
+    image: "/cars/lynk-co-05.webp",
   },
   {
     slug: "lynk-co-06",
