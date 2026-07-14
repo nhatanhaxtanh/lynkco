@@ -49,7 +49,7 @@ const slides: Slide[] = [
       "SUV cỡ D với công nghệ hybrid EM-P tiên tiến — mạnh mẽ khi cần, tiết kiệm mọi hành trình.",
     price: "Giá từ 1,299 tỷ",
     silhouette: "suv",
-    image: "/cars/lynk-co-08.webp",
+    image: "/cars/lynk-co-08-hero.webp",
   },
   {
     code: "900",
