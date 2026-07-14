@@ -132,53 +132,61 @@ export function Hero() {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:5rem_100%]" />
       </div>
 
+      {/* Ảnh nền full-bleed cho slide có ảnh thật */}
+      <AnimatePresence mode="popLayout">
+        {slide.image && (
+          <motion.div
+            key={`bg-${index}`}
+            initial={{ opacity: 0, scale: 1.06 }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              transition: { duration: 0.9, ease: [0.21, 0.47, 0.32, 0.98] },
+            }}
+            exit={{ opacity: 0, transition: { duration: 0.4 } }}
+            className="pointer-events-none absolute inset-0"
+          >
+            <Image
+              src={slide.image}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-[62%_center]"
+            />
+            {/* Gradient tối để chữ trắng luôn đọc rõ */}
+            <div className="absolute inset-0 bg-gradient-to-r from-neutral-950/95 via-neutral-950/65 to-neutral-950/25" />
+            <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/85 via-transparent to-neutral-950/50" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <div className="relative flex min-h-[38rem] flex-col justify-center pb-24 pt-28 md:min-h-[42rem] md:pt-32">
-          {/* Chữ số hiệu khổng lồ phía sau */}
+          {/* Chữ số hiệu khổng lồ phía sau (ẩn khi slide dùng ảnh nền) */}
           <AnimatePresence mode="popLayout" custom={direction}>
-            <motion.span
-              key={`code-${index}`}
-              custom={direction}
-              initial={{ opacity: 0, scale: 1.1 }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-                transition: { duration: 0.7, ease: "easeOut" },
-              }}
-              exit={{ opacity: 0, transition: { duration: 0.3 } }}
-              aria-hidden="true"
-              className="pointer-events-none absolute right-0 top-1/2 hidden -translate-y-1/2 select-none text-[16rem] font-black leading-none tracking-tighter text-transparent lg:block xl:text-[20rem] [-webkit-text-stroke:2px_rgba(255,255,255,0.14)]"
-            >
-              {slide.code}
-            </motion.span>
-          </AnimatePresence>
-
-          {/* Hình ảnh xe: ảnh thật nếu có, không thì silhouette */}
-          <AnimatePresence mode="popLayout">
-            {slide.image ? (
-              <motion.div
-                key={`car-${index}`}
-                initial={{ opacity: 0, x: 120 }}
+            {!slide.image && (
+              <motion.span
+                key={`code-${index}`}
+                custom={direction}
+                initial={{ opacity: 0, scale: 1.1 }}
                 animate={{
                   opacity: 1,
-                  x: 0,
-                  transition: { duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] },
+                  scale: 1,
+                  transition: { duration: 0.7, ease: "easeOut" },
                 }}
-                exit={{ opacity: 0, x: -80, transition: { duration: 0.35 } }}
-                className="pointer-events-none absolute right-0 top-1/2 hidden -translate-y-[55%] lg:block"
+                exit={{ opacity: 0, transition: { duration: 0.3 } }}
+                aria-hidden="true"
+                className="pointer-events-none absolute right-0 top-1/2 hidden -translate-y-1/2 select-none text-[16rem] font-black leading-none tracking-tighter text-transparent lg:block xl:text-[20rem] [-webkit-text-stroke:2px_rgba(255,255,255,0.14)]"
               >
-                <div className="relative aspect-[3/2] w-[24rem] overflow-hidden rounded-3xl shadow-2xl shadow-black/60 ring-1 ring-white/15 xl:w-[32rem]">
-                  <Image
-                    src={slide.image}
-                    alt={slide.title}
-                    fill
-                    sizes="(min-width: 1280px) 32rem, (min-width: 1024px) 24rem, 0px"
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/45 via-transparent to-transparent" />
-                </div>
-              </motion.div>
-            ) : (
+                {slide.code}
+              </motion.span>
+            )}
+          </AnimatePresence>
+
+          {/* Silhouette xe cho slide chưa có ảnh thật */}
+          <AnimatePresence mode="popLayout">
+            {!slide.image && (
               <motion.div
                 key={`car-${index}`}
                 initial={{ opacity: 0, x: 120 }}
