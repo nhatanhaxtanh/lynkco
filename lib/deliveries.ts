@@ -5,8 +5,8 @@ export type Delivery = {
    * Chưa có ảnh thì bỏ trống — ô sẽ hiển thị placeholder.
    */
   image?: string;
+  /** Chỉ dùng làm alt text cho SEO/trợ năng, không hiển thị trên ảnh */
   caption: string;
-  location: string;
   /** Tailwind object-position khi cần lệch vùng crop (vd: "object-left") */
   objectPosition?: string;
 };
@@ -14,33 +14,23 @@ export type Delivery = {
 export const deliveries: Delivery[] = [
   {
     image: "/deliveries/ban-giao-1.jpg",
-    caption: "Bàn giao Lynk & Co 08 EM-P",
-    location: "TP. Hồ Chí Minh",
-  },
-  {
-    image: "/deliveries/ban-giao-2.jpg",
-    caption: "Bàn giao Lynk & Co 08 EM-P",
-    location: "TP. Hồ Chí Minh",
+    caption: "Lễ bàn giao Lynk & Co 08 EM-P tại TP. Hồ Chí Minh",
   },
   {
     image: "/deliveries/ban-giao-3.jpg",
-    caption: "Bàn giao Lynk & Co 08",
-    location: "Đồng Nai",
+    caption: "Lễ bàn giao Lynk & Co 08 tại showroom",
   },
   {
     image: "/deliveries/ban-giao-4.jpg",
-    caption: "Ra mắt Lynk & Co 08 EM-P",
-    location: "TP. Hồ Chí Minh",
+    caption: "Sự kiện ra mắt Lynk & Co 08 EM-P",
     objectPosition: "object-left",
   },
   {
     image: "/deliveries/ban-giao-5.jpg",
-    caption: "Bàn giao Lynk & Co 06",
-    location: "TP. Hồ Chí Minh",
+    caption: "Lễ bàn giao Lynk & Co 06 cho khách hàng",
   },
   {
     image: "/deliveries/ban-giao-6.jpg",
-    caption: "Bàn giao Lynk & Co 06",
-    location: "TP. Hồ Chí Minh",
+    caption: "Lễ bàn giao Lynk & Co 06 tại showroom",
   },
 ];

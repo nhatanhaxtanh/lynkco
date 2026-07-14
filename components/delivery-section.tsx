@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowRight, Camera, KeyRound } from "lucide-react";
+import { ArrowRight, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/fade-in";
 import { deliveries, type Delivery } from "@/lib/deliveries";
@@ -23,7 +23,7 @@ function DeliveryTile({ item, index }: { item: Delivery; index: number }) {
       {item.image ? (
         <Image
           src={item.image}
-          alt={`${item.caption} tại ${item.location}`}
+          alt={item.caption}
           fill
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
           className={`object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06] ${item.objectPosition ?? ""}`}
@@ -36,18 +36,6 @@ function DeliveryTile({ item, index }: { item: Delivery; index: number }) {
           </span>
         </div>
       )}
-
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-neutral-950/70 via-transparent to-transparent" />
-
-      <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-5">
-        <div>
-          <p className="text-sm font-bold text-white">{item.caption}</p>
-          <p className="mt-0.5 text-xs text-white/70">{item.location}</p>
-        </div>
-        <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-md">
-          <KeyRound className="size-4" />
-        </span>
-      </figcaption>
     </motion.figure>
   );
 }
@@ -85,7 +73,11 @@ export function DeliverySection() {
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {deliveries.map((item, index) => (
-            <DeliveryTile key={item.caption} item={item} index={index} />
+            <DeliveryTile
+              key={item.image ?? `${item.caption}-${index}`}
+              item={item}
+              index={index}
+            />
           ))}
         </div>
       </div>
