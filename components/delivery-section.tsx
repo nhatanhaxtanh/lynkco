@@ -18,7 +18,7 @@ function DeliveryTile({ item, index }: { item: Delivery; index: number }) {
         delay: (index % 3) * 0.08,
         ease: [0.21, 0.47, 0.32, 0.98],
       }}
-      className="group relative aspect-[4/3] overflow-hidden rounded-3xl bg-neutral-100"
+      className="group relative aspect-[3/4] overflow-hidden rounded-3xl bg-neutral-100"
     >
       {item.image ? (
         <Image
@@ -26,7 +26,7 @@ function DeliveryTile({ item, index }: { item: Delivery; index: number }) {
           alt={`${item.caption} tại ${item.location}`}
           fill
           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+          className={`object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06] ${item.objectPosition ?? ""}`}
         />
       ) : (
         <div className="flex h-full flex-col items-center justify-center gap-3 text-neutral-400">
