@@ -60,6 +60,7 @@ const slides: Slide[] = [
       "SUV flagship 6 chỗ với sức mạnh trên 500 mã lực — công nghệ và sang trọng không thỏa hiệp.",
     price: "Dự kiến 3,069 tỷ",
     silhouette: "suv",
+    image: "/cars/lynk-co-900.webp",
   },
 ];
 
