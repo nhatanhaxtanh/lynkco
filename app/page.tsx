@@ -8,6 +8,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { ShowroomSection } from "@/components/showroom-section";
 import { SiteHeader } from "@/components/site-header";
 import { TestDriveForm } from "@/components/test-drive-form";
+import { TestDrivePopup } from "@/components/test-drive-popup";
 import { cars, formatVnd } from "@/lib/cars";
 import { siteConfig } from "@/lib/site-config";
 
@@ -86,6 +87,7 @@ export default function HomePage() {
       </main>
       <SiteFooter />
       <FloatingContact />
+      <TestDrivePopup />
     </>
   );
 }
