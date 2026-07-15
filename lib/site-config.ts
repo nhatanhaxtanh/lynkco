@@ -11,7 +11,7 @@ export const siteConfig = {
     "https://www.google.com/maps/search/?api=1&query=Lynk+%26+Co+220+Nguy%E1%BB%85n+H%E1%BB%AFu+C%E1%BA%A3nh+TP+HCM",
   openingHours: "8:00 – 19:00 (Thứ 2 – Chủ nhật)",
   email: "thanhvinh6701@gmail.com",
-  facebook: "https://www.facebook.com/lynkcocentersaigon",
+  facebook: "https://www.facebook.com/profile.php?id=61580552397491",
   zalo: "https://zalo.me/0764949837",
   youtube: "https://www.youtube.com/@lynkco",
 };
