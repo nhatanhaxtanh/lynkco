@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { CalendarCheck, Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -24,9 +24,11 @@ import {
 import { cars } from "@/lib/cars";
 import { siteConfig } from "@/lib/site-config";
 
-/** Chỉ hiện 1 lần mỗi phiên truy cập */
-const STORAGE_KEY = "lynkco-test-drive-popup-seen";
+/** Đánh dấu đã đăng ký thành công — không hiện lại trong phiên truy cập */
+const STORAGE_KEY = "lynkco-test-drive-popup-done";
 const OPEN_DELAY_MS = 2000;
+/** Người dùng tắt popup thì hiện lại sau khoảng này */
+const REOPEN_DELAY_MS = 30_000;
 const FALLBACK_IMAGE = "/cars/lynk-co-08-hero.webp";
 
 export function TestDrivePopup() {
@@ -35,15 +37,23 @@ export function TestDrivePopup() {
   const [submitting, setSubmitting] = useState(false);
   const [model, setModel] = useState(featured.name);
 
+  const timerRef = useRef<number | null>(null);
+
   useEffect(() => {
     if (window.sessionStorage.getItem(STORAGE_KEY)) return;
-    const timer = window.setTimeout(() => setOpen(true), OPEN_DELAY_MS);
-    return () => window.clearTimeout(timer);
+    timerRef.current = window.setTimeout(() => setOpen(true), OPEN_DELAY_MS);
+    return () => {
+      if (timerRef.current) window.clearTimeout(timerRef.current);
+    };
   }, []);
 
   function handleOpenChange(nextOpen: boolean) {
     setOpen(nextOpen);
-    if (!nextOpen) window.sessionStorage.setItem(STORAGE_KEY, "1");
+    // Tắt popup (chưa đăng ký) → hẹn giờ hiện lại
+    if (!nextOpen && !window.sessionStorage.getItem(STORAGE_KEY)) {
+      if (timerRef.current) window.clearTimeout(timerRef.current);
+      timerRef.current = window.setTimeout(() => setOpen(true), REOPEN_DELAY_MS);
+    }
   }
 
   const selectedCar = cars.find((car) => car.name === model) ?? featured;
@@ -68,7 +78,9 @@ export function TestDrivePopup() {
     await new Promise((resolve) => setTimeout(resolve, 900));
     setSubmitting(false);
 
-    handleOpenChange(false);
+    // Đăng ký xong thì không làm phiền nữa trong phiên này
+    window.sessionStorage.setItem(STORAGE_KEY, "1");
+    setOpen(false);
     toast.success("Đăng ký lái thử thành công!", {
       description: `Cảm ơn ${name}, tư vấn viên sẽ liên hệ bạn qua số ${phone} trong 24h.`,
     });
