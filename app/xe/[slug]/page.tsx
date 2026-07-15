@@ -120,7 +120,7 @@ export default async function CarDetailPage({ params }: Props) {
         <section className="relative overflow-hidden bg-neutral-950 text-white">
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute -top-40 left-1/2 h-[32rem] w-[52rem] -translate-x-1/2 rounded-full bg-white/[0.06] blur-3xl" />
-            <span className="absolute -right-6 top-24 select-none text-[14rem] font-black leading-none tracking-tighter text-transparent [-webkit-text-stroke:2px_rgba(255,255,255,0.1)] lg:text-[18rem]">
+            <span className="absolute -right-6 top-24 hidden select-none text-[14rem] font-black leading-none tracking-tighter text-transparent [-webkit-text-stroke:2px_rgba(255,255,255,0.1)] md:block lg:text-[18rem]">
               {car.code}
             </span>
           </div>
@@ -129,7 +129,7 @@ export default async function CarDetailPage({ params }: Props) {
             <FadeIn>
               <nav
                 aria-label="Breadcrumb"
-                className="flex items-center gap-1.5 text-sm text-white/50"
+                className="flex flex-wrap items-center gap-1.5 text-sm text-white/50"
               >
                 <Link href="/" className="hover:text-white">
                   Trang chủ
