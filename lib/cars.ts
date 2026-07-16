@@ -279,7 +279,6 @@ export const cars: Car[] = [
     price: 3_069_000_000,
     priceDisplay: "3,069 tỷ",
     image: "/cars/lynk-co-900-card.jpg",
-    anticipated: true,
     description:
       "Lynk & Co 900 là flagship SUV 6 chỗ với hệ truyền động EM-P trên 500 mã lực, khoang thương gia 2+2+2 và loạt công nghệ đỉnh cao — tuyên ngôn mạnh mẽ nhất của Lynk & Co về đẳng cấp và sự sang trọng.",
     specs: [
@@ -290,7 +289,7 @@ export const cars: Car[] = [
       { label: "Dẫn động", value: "4 bánh toàn thời gian (AWD)" },
       { label: "Tầm chạy thuần điện", value: "~220 km (CLTC)" },
       { label: "Số chỗ ngồi", value: "6 (2+2+2)" },
-      { label: "Tình trạng", value: "Sắp ra mắt — nhận đặt trước" },
+      { label: "Tình trạng", value: "Mới ra mắt — liên hệ đặt xe ngay" },
     ],
     features: [
       "Khoang thương gia 6 chỗ bố trí 2+2+2",

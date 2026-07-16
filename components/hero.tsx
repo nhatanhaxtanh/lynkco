@@ -60,12 +60,12 @@ const slides: Slide[] = [
   },
   {
     code: "900",
-    eyebrow: "Flagship sắp ra mắt",
+    eyebrow: "Flagship vừa ra mắt",
     title: "LYNK & CO 900",
     highlight: "Đẳng cấp tối thượng",
     description:
       "SUV flagship 6 chỗ với sức mạnh trên 500 mã lực — công nghệ và sang trọng không thỏa hiệp.",
-    price: "Dự kiến 3,069 tỷ",
+    price: "Giá từ 3,069 tỷ",
     silhouette: "suv",
     image: "/cars/lynk-co-900.jpeg",
   },

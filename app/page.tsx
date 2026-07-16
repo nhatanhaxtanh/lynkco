@@ -2,6 +2,7 @@ import { DeliverySection } from "@/components/delivery-section";
 import { FeaturesSection } from "@/components/features-section";
 import { FloatingContact } from "@/components/floating-contact";
 import { Hero } from "@/components/hero";
+import { Launch900Section } from "@/components/launch-900-section";
 import { ModelsSection } from "@/components/models-section";
 import { NewsSection } from "@/components/news-section";
 import { SiteFooter } from "@/components/site-footer";
@@ -79,6 +80,7 @@ export default function HomePage() {
       <main>
         <Hero />
         <ModelsSection />
+        <Launch900Section />
         <FeaturesSection />
         <DeliverySection />
         <ShowroomSection />
