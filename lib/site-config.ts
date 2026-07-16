@@ -1,7 +1,8 @@
 export const siteConfig = {
   name: "Lynk & Co Sài Gòn",
   brand: "Lynk & Co",
-  url: "https://lynkcosaigon.com.vn",
+  // Domain chính trên Vercel là bản www (bản không-www redirect sang)
+  url: "https://www.lynkcosaigon.com.vn",
   description:
     "Đại lý Lynk & Co chính hãng tại TP. Hồ Chí Minh. Cập nhật bảng giá xe Lynk & Co 01, 02, 03+, 05, 06, 08, 09, 900 mới nhất, đăng ký lái thử và nhận báo giá lăn bánh nhanh chóng.",
   hotline: "0764949837",
