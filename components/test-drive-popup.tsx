@@ -88,7 +88,7 @@ export function TestDrivePopup() {
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-h-[calc(100dvh-2rem)] max-w-3xl gap-0 overflow-hidden overflow-y-auto rounded-3xl border-none p-0 sm:grid-cols-[1fr_1.15fr]">
+      <DialogContent className="max-h-[calc(100dvh-2rem)] max-w-4xl gap-0 overflow-hidden overflow-y-auto rounded-3xl border-none p-0 sm:grid-cols-[1.25fr_1fr]">
         {/* Ảnh xe — đổi theo mẫu xe đang chọn trong form */}
         <div className="relative h-44 bg-neutral-950 sm:h-auto">
           <Image
@@ -96,7 +96,9 @@ export function TestDrivePopup() {
             src={selectedCar.image ?? FALLBACK_IMAGE}
             alt={`${selectedCar.name} — ${selectedCar.bodyType}`}
             fill
-            sizes="(min-width: 640px) 24rem, 100vw"
+            // object-cover phóng ảnh vượt bề rộng cột hiển thị,
+            // phải xin ảnh lớn hơn mới không vỡ
+            sizes="(min-width: 640px) 60rem, 100vw"
             className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-neutral-950/10 to-neutral-950/30" />
