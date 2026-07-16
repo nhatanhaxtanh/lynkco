@@ -21,8 +21,8 @@ const contacts = [
       vi: `Gọi hotline ${siteConfig.hotlineDisplay}`,
       en: `Call hotline ${siteConfig.hotlineDisplay}`,
     },
-    className: "bg-neutral-950 text-white hover:bg-neutral-800",
-    pulseClassName: "bg-neutral-950/40",
+    className: "bg-green-500 text-white hover:bg-green-600",
+    pulseClassName: "bg-green-500/40",
     icon: <Phone className="size-6" />,
   },
   {
