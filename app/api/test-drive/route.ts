@@ -75,6 +75,20 @@ export async function POST(request: Request) {
       subject: `Đăng ký lái thử mới: ${name} — ${model || "chưa chọn xe"}`,
       ...(email ? { reply_to: email } : {}),
       html: renderLeadEmail({ name, phone, model, email, note, source, receivedAt }),
+      // Bản plain-text song song giúp Gmail xếp vào tab Chính thay vì Quảng cáo
+      text: [
+        `Đăng ký lái thử mới từ ${siteConfig.url.replace("https://", "")}`,
+        ``,
+        `Họ tên: ${name}`,
+        `Số điện thoại: ${phone}`,
+        `Mẫu xe quan tâm: ${model || "Chưa chọn"}`,
+        `Email khách: ${email || "Không để lại"}`,
+        `Ghi chú: ${note || "Không có"}`,
+        `Gửi từ: ${source}`,
+        `Thời gian: ${receivedAt}`,
+        ``,
+        `Khách kỳ vọng được liên hệ trong vòng 24 giờ.`,
+      ].join("\n"),
     }),
   });
 
