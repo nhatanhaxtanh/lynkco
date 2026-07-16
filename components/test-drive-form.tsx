@@ -17,6 +17,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { FadeIn } from "@/components/fade-in";
 import { cars } from "@/lib/cars";
+import { submitTestDrive } from "@/lib/leads";
 import { siteConfig } from "@/lib/site-config";
 
 export function TestDriveForm({ defaultModel }: { defaultModel?: string }) {
@@ -44,9 +45,20 @@ export function TestDriveForm({ defaultModel }: { defaultModel?: string }) {
     }
 
     setSubmitting(true);
-    // TODO: nối API/CRM thật tại đây (POST /api/test-drive)
-    await new Promise((resolve) => setTimeout(resolve, 900));
+    const result = await submitTestDrive({
+      name,
+      phone,
+      model,
+      email: String(data.get("email") ?? "").trim(),
+      note: String(data.get("note") ?? "").trim(),
+      source: "Form lái thử trang chủ",
+    });
     setSubmitting(false);
+
+    if (!result.ok) {
+      toast.error(result.error);
+      return;
+    }
 
     form.reset();
     setModel(defaultModel ?? "");

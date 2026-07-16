@@ -21,7 +21,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { cars } from "@/lib/cars";
+import { submitTestDrive } from "@/lib/leads";
 import { siteConfig } from "@/lib/site-config";
 
 /** Đánh dấu đã đăng ký thành công — không hiện lại trong phiên truy cập */
@@ -74,9 +76,20 @@ export function TestDrivePopup() {
     }
 
     setSubmitting(true);
-    // TODO: nối API/CRM thật tại đây (POST /api/test-drive)
-    await new Promise((resolve) => setTimeout(resolve, 900));
+    const result = await submitTestDrive({
+      name,
+      phone,
+      model,
+      email: String(data.get("email") ?? "").trim(),
+      note: String(data.get("note") ?? "").trim(),
+      source: "Popup trang chủ",
+    });
     setSubmitting(false);
+
+    if (!result.ok) {
+      toast.error(result.error);
+      return;
+    }
 
     // Đăng ký xong thì không làm phiền nữa trong phiên này
     window.sessionStorage.setItem(STORAGE_KEY, "1");
@@ -146,19 +159,32 @@ export function TestDrivePopup() {
               />
             </div>
 
-            <div className="grid gap-2">
-              <Label htmlFor="popup-phone">
-                Số điện thoại <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="popup-phone"
-                name="phone"
-                type="tel"
-                placeholder="09xx xxx xxx"
-                autoComplete="tel"
-                required
-                className="h-11 rounded-xl"
-              />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-2">
+                <Label htmlFor="popup-phone">
+                  Số điện thoại <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  id="popup-phone"
+                  name="phone"
+                  type="tel"
+                  placeholder="09xx xxx xxx"
+                  autoComplete="tel"
+                  required
+                  className="h-11 rounded-xl"
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="popup-email">Email</Label>
+                <Input
+                  id="popup-email"
+                  name="email"
+                  type="email"
+                  placeholder="ban@email.com"
+                  autoComplete="email"
+                  className="h-11 rounded-xl"
+                />
+              </div>
             </div>
 
             <div className="grid gap-2">
@@ -178,6 +204,17 @@ export function TestDrivePopup() {
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="popup-note">Ghi chú</Label>
+              <Textarea
+                id="popup-note"
+                name="note"
+                placeholder="Thời gian mong muốn, khu vực của bạn..."
+                rows={2}
+                className="rounded-xl"
+              />
             </div>
 
             <Button
