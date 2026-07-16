@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { LanguageProvider } from "@/components/language-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
@@ -64,8 +65,10 @@ export default function RootLayout({
   return (
     <html lang="vi" className={`${inter.className} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
-        {children}
-        <Toaster position="top-center" richColors />
+        <LanguageProvider>
+          {children}
+          <Toaster position="top-center" richColors />
+        </LanguageProvider>
       </body>
     </html>
   );

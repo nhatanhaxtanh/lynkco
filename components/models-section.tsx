@@ -9,13 +9,43 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { CarSilhouette } from "@/components/car-silhouette";
 import { FadeIn } from "@/components/fade-in";
-import { cars, type Car } from "@/lib/cars";
+import { useLang } from "@/components/language-provider";
+import { cars, localizeCar, type Car } from "@/lib/cars";
+
+const copy = {
+  vi: {
+    eyebrow: "Dòng sản phẩm",
+    heading: "Bảng giá xe Lynk & Co mới nhất",
+    intro:
+      "Trọn bộ các mẫu xe Lynk & Co phân phối chính hãng tại Việt Nam, từ SUV đô thị đến flagship hybrid. Giá niêm yết có thể thay đổi theo chương trình ưu đãi — liên hệ để nhận báo giá lăn bánh chính xác nhất.",
+    comingSoon: "Sắp ra mắt",
+    priceFrom: "Giá từ",
+    anticipated: " (dự kiến)",
+    currency: "VNĐ",
+    details: "Chi tiết",
+    viewDetails: "Xem chi tiết",
+  },
+  en: {
+    eyebrow: "The lineup",
+    heading: "Latest Lynk & Co prices",
+    intro:
+      "The full range of Lynk & Co models officially distributed in Vietnam, from urban SUVs to the flagship hybrid. List prices may change with ongoing promotions — contact us for an exact on-the-road quote.",
+    comingSoon: "Coming soon",
+    priceFrom: "From",
+    anticipated: " (expected)",
+    currency: "VND",
+    details: "Details",
+    viewDetails: "View details for",
+  },
+};
 
 function CarThumbnail({ car }: { car: Car }) {
+  const { lang } = useLang();
+  const t = copy[lang];
   return (
     <Link
       href={`/xe/${car.slug}`}
-      aria-label={`Xem chi tiết ${car.name}`}
+      aria-label={`${t.viewDetails} ${car.name}`}
       className="relative block aspect-[16/10] overflow-hidden bg-neutral-950"
     >
       {car.image ? (
@@ -47,7 +77,7 @@ function CarThumbnail({ car }: { car: Car }) {
       </span>
       {car.anticipated && (
         <Badge className="absolute right-4 top-4 rounded-full bg-white text-neutral-950 hover:bg-white">
-          Sắp ra mắt
+          {t.comingSoon}
         </Badge>
       )}
 
@@ -59,6 +89,9 @@ function CarThumbnail({ car }: { car: Car }) {
 }
 
 function ModelCard({ car, index }: { car: Car; index: number }) {
+  const { lang } = useLang();
+  const t = copy[lang];
+  const c = localizeCar(car, lang);
   return (
     <motion.div
       initial={{ opacity: 0, y: 32 }}
@@ -73,7 +106,7 @@ function ModelCard({ car, index }: { car: Car; index: number }) {
       className="h-full"
     >
       <Card className="group flex h-full flex-col overflow-hidden rounded-3xl border-border/80 pt-0 shadow-none transition-shadow duration-300 hover:shadow-xl hover:shadow-neutral-900/10">
-        <CarThumbnail car={car} />
+        <CarThumbnail car={c} />
 
         <CardHeader className="pb-0">
           <h3 className="text-xl font-bold tracking-tight">
@@ -82,34 +115,35 @@ function ModelCard({ car, index }: { car: Car; index: number }) {
             </Link>
           </h3>
           <p className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">
-            {car.tagline}
+            {c.tagline}
           </p>
         </CardHeader>
 
         <CardContent className="flex flex-wrap gap-2 pt-4">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-xs font-medium">
             <Fuel className="size-3.5" />
-            {car.powertrain}
+            {c.powertrain}
           </span>
           <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-xs font-medium">
             <Gauge className="size-3.5" />
-            {car.power}
+            {c.power}
           </span>
           <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-xs font-medium">
             <Armchair className="size-3.5" />
-            {car.seats}
+            {c.seats}
           </span>
         </CardContent>
 
         <CardFooter className="mt-auto flex items-end justify-between border-t border-border/60 pt-4">
           <div>
             <p className="text-xs uppercase tracking-wider text-muted-foreground">
-              Giá từ{car.anticipated ? " (dự kiến)" : ""}
+              {t.priceFrom}
+              {car.anticipated ? t.anticipated : ""}
             </p>
             <p className="text-2xl font-black tracking-tight">
-              {car.priceDisplay}
+              {c.priceDisplay}
               <span className="ml-1 text-sm font-semibold text-muted-foreground">
-                VNĐ
+                {t.currency}
               </span>
             </p>
           </div>
@@ -117,14 +151,14 @@ function ModelCard({ car, index }: { car: Car; index: number }) {
             render={
               <Link
                 href={`/xe/${car.slug}`}
-                aria-label={`Xem chi tiết ${car.name}`}
+                aria-label={`${t.viewDetails} ${car.name}`}
               />
             }
             nativeButton={false}
             size="sm"
             className="rounded-full px-4"
           >
-            Chi tiết
+            {t.details}
             <ArrowRight className="size-3.5" />
           </Button>
         </CardFooter>
@@ -134,22 +168,19 @@ function ModelCard({ car, index }: { car: Car; index: number }) {
 }
 
 export function ModelsSection() {
+  const { lang } = useLang();
+  const t = copy[lang];
   return (
     <section id="mau-xe" className="bg-background py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <FadeIn>
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-            Dòng sản phẩm
+            {t.eyebrow}
           </p>
           <h2 className="mt-3 max-w-2xl text-3xl font-black tracking-tight sm:text-4xl md:text-5xl">
-            Bảng giá xe Lynk &amp; Co mới nhất
+            {t.heading}
           </h2>
-          <p className="mt-4 max-w-2xl text-muted-foreground">
-            Trọn bộ các mẫu xe Lynk &amp; Co phân phối chính hãng tại Việt Nam,
-            từ SUV đô thị đến flagship hybrid. Giá niêm yết có thể thay đổi
-            theo chương trình ưu đãi — liên hệ để nhận báo giá lăn bánh chính
-            xác nhất.
-          </p>
+          <p className="mt-4 max-w-2xl text-muted-foreground">{t.intro}</p>
         </FadeIn>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

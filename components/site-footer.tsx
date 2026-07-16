@@ -1,9 +1,48 @@
+"use client";
+
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { useLang } from "@/components/language-provider";
 import { Separator } from "@/components/ui/separator";
-import { cars } from "@/lib/cars";
+import { cars, localizeCar } from "@/lib/cars";
 import { siteConfig } from "@/lib/site-config";
 
+const copy = {
+  vi: {
+    about:
+      "— đại lý phân phối xe Lynk & Co chính hãng. Trải nghiệm sự kết hợp giữa công nghệ tối tân và thiết kế sang trọng chuẩn châu Âu.",
+    models: "Mẫu xe",
+    from: "từ",
+    quickLinks: "Liên kết nhanh",
+    priceList: "Bảng giá xe",
+    testDrive: "Đăng ký lái thử",
+    why: "Vì sao chọn Lynk & Co",
+    deliveries: "Lễ bàn giao xe",
+    showroom: "Showroom",
+    news: "Tin tức & Sự kiện",
+    disclaimer:
+      "Giá xe và thông số mang tính tham khảo, có thể thay đổi theo từng thời điểm.",
+  },
+  en: {
+    about:
+      "— an authorized Lynk & Co dealer. Experience the blend of cutting-edge technology and refined European design.",
+    models: "Models",
+    from: "from",
+    quickLinks: "Quick links",
+    priceList: "Price list",
+    testDrive: "Book a test drive",
+    why: "Why Lynk & Co",
+    deliveries: "Delivery ceremonies",
+    showroom: "Showroom",
+    news: "News & Events",
+    disclaimer:
+      "Prices and specifications are for reference and may change over time.",
+  },
+};
+
 export function SiteFooter() {
+  const { lang } = useLang();
+  const t = copy[lang];
+
   return (
     <footer id="lien-he" className="bg-neutral-950 text-white">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
@@ -11,9 +50,7 @@ export function SiteFooter() {
           <div>
             <p className="text-xl font-black tracking-[0.2em]">LYNK &amp; CO</p>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/60">
-              {siteConfig.name} — đại lý phân phối xe Lynk &amp; Co chính hãng.
-              Trải nghiệm sự kết hợp giữa công nghệ tối tân và thiết kế sang
-              trọng chuẩn châu Âu.
+              {siteConfig.name} {t.about}
             </p>
             <address className="mt-6 space-y-3 text-sm not-italic text-white/70">
               <p className="flex items-start gap-3">
@@ -39,54 +76,57 @@ export function SiteFooter() {
             </address>
           </div>
 
-          <nav aria-label="Mẫu xe">
+          <nav aria-label={t.models}>
             <p className="text-sm font-semibold uppercase tracking-wider text-white/50">
-              Mẫu xe
+              {t.models}
             </p>
             <ul className="mt-4 space-y-2.5 text-sm text-white/70">
-              {cars.map((car) => (
-                <li key={car.slug}>
-                  <a href="#mau-xe" className="hover:text-white">
-                    {car.name} — từ {car.priceDisplay}
-                  </a>
-                </li>
-              ))}
+              {cars.map((car) => {
+                const c = localizeCar(car, lang);
+                return (
+                  <li key={car.slug}>
+                    <a href="#mau-xe" className="hover:text-white">
+                      {car.name} — {t.from} {c.priceDisplay}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
 
-          <nav aria-label="Liên kết nhanh">
+          <nav aria-label={t.quickLinks}>
             <p className="text-sm font-semibold uppercase tracking-wider text-white/50">
-              Liên kết nhanh
+              {t.quickLinks}
             </p>
             <ul className="mt-4 space-y-2.5 text-sm text-white/70">
               <li>
                 <a href="#mau-xe" className="hover:text-white">
-                  Bảng giá xe
+                  {t.priceList}
                 </a>
               </li>
               <li>
                 <a href="#lai-thu" className="hover:text-white">
-                  Đăng ký lái thử
+                  {t.testDrive}
                 </a>
               </li>
               <li>
                 <a href="#uu-diem" className="hover:text-white">
-                  Vì sao chọn Lynk &amp; Co
+                  {t.why}
                 </a>
               </li>
               <li>
                 <a href="#ban-giao" className="hover:text-white">
-                  Lễ bàn giao xe
+                  {t.deliveries}
                 </a>
               </li>
               <li>
                 <a href="#showroom" className="hover:text-white">
-                  Showroom
+                  {t.showroom}
                 </a>
               </li>
               <li>
                 <a href="/#tin-tuc" className="hover:text-white">
-                  Tin tức &amp; Sự kiện
+                  {t.news}
                 </a>
               </li>
               <li>
@@ -115,8 +155,7 @@ export function SiteFooter() {
 
         <Separator className="my-8 bg-white/10" />
         <p className="text-xs text-white/40">
-          © {new Date().getFullYear()} {siteConfig.name}. Giá xe và thông số
-          mang tính tham khảo, có thể thay đổi theo từng thời điểm.
+          © {new Date().getFullYear()} {siteConfig.name}. {t.disclaimer}
         </p>
       </div>
     </footer>

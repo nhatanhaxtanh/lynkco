@@ -4,17 +4,21 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { useLang } from "@/components/language-provider";
 import { Button } from "@/components/ui/button";
 import { CarSilhouette } from "@/components/car-silhouette";
+import type { Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+
+type BiText = Record<Lang, string>;
 
 type Slide = {
   code: string;
-  eyebrow: string;
+  eyebrow: BiText;
   title: string;
-  highlight: string;
-  description: string;
-  price?: string;
+  highlight: BiText;
+  description: BiText;
+  price?: BiText;
   silhouette: "suv" | "sedan";
   /** Ảnh thật của xe (đặt trong public/cars/); chưa có thì hiển thị silhouette */
   image?: string;
@@ -27,49 +31,92 @@ type Slide = {
 const slides: Slide[] = [
   {
     code: "LYNK",
-    eyebrow: "Đại lý chính hãng tại TP. Hồ Chí Minh",
+    eyebrow: {
+      vi: "Đại lý chính hãng tại TP. Hồ Chí Minh",
+      en: "Authorized dealer in Ho Chi Minh City",
+    },
     title: "LYNK & CO",
-    highlight: "Công nghệ tối tân. Thiết kế châu Âu.",
-    description:
-      "Trọn bộ 8 mẫu xe từ SUV đô thị, sedan hiệu suất cao đến flagship hybrid. Cập nhật giá lăn bánh và đăng ký lái thử ngay hôm nay.",
+    highlight: {
+      vi: "Công nghệ tối tân. Thiết kế châu Âu.",
+      en: "Cutting-edge technology. European design.",
+    },
+    description: {
+      vi: "Trọn bộ 8 mẫu xe từ SUV đô thị, sedan hiệu suất cao đến flagship hybrid. Cập nhật giá lăn bánh và đăng ký lái thử ngay hôm nay.",
+      en: "A full lineup of 8 models, from urban SUVs and performance sedans to the flagship hybrid. Get on-the-road pricing and book a test drive today.",
+    },
     silhouette: "suv",
     video: "/videos/hero-brand.mp4",
     poster: "/videos/hero-brand-poster.jpg",
   },
   {
     code: "06",
-    eyebrow: "Lựa chọn dẫn đầu phân khúc",
+    eyebrow: {
+      vi: "Lựa chọn dẫn đầu phân khúc",
+      en: "The segment leader",
+    },
     title: "LYNK & CO 06",
-    highlight: "SUV cỡ B năng động",
-    description:
-      "Động cơ 1.5L Turbo 181 mã lực, cá tính Scandinavia trong từng đường nét. Khởi điểm hấp dẫn nhất dải sản phẩm.",
-    price: "Giá từ 679 triệu",
+    highlight: { vi: "SUV cỡ B năng động", en: "The dynamic B-segment SUV" },
+    description: {
+      vi: "Động cơ 1.5L Turbo 181 mã lực, cá tính Scandinavia trong từng đường nét. Khởi điểm hấp dẫn nhất dải sản phẩm.",
+      en: "A 181 hp 1.5L Turbo engine and Scandinavian character in every line. The most accessible entry to the lineup.",
+    },
+    price: { vi: "Giá từ 679 triệu", en: "From 679 million VND" },
     silhouette: "suv",
     image: "/cars/lynk-co-06.jpg",
   },
   {
     code: "08",
-    eyebrow: "Plug-in Hybrid EM-P",
+    eyebrow: { vi: "Plug-in Hybrid EM-P", en: "EM-P plug-in hybrid" },
     title: "LYNK & CO 08",
-    highlight: "345 mã lực, êm ái vượt trội",
-    description:
-      "SUV cỡ D với công nghệ hybrid EM-P tiên tiến — mạnh mẽ khi cần, tiết kiệm mọi hành trình.",
-    price: "Giá từ 1,299 tỷ",
+    highlight: {
+      vi: "345 mã lực, êm ái vượt trội",
+      en: "345 hp, remarkably refined",
+    },
+    description: {
+      vi: "SUV cỡ D với công nghệ hybrid EM-P tiên tiến — mạnh mẽ khi cần, tiết kiệm mọi hành trình.",
+      en: "A D-segment SUV with advanced EM-P hybrid technology — powerful when you need it, efficient on every journey.",
+    },
+    price: { vi: "Giá từ 1,299 tỷ", en: "From 1.299 billion VND" },
     silhouette: "suv",
     image: "/cars/lynk-co-08-hero.webp",
   },
   {
     code: "900",
-    eyebrow: "Flagship vừa ra mắt",
+    eyebrow: { vi: "Flagship vừa ra mắt", en: "Flagship — just launched" },
     title: "LYNK & CO 900",
-    highlight: "Đẳng cấp tối thượng",
-    description:
-      "SUV flagship 6 chỗ với sức mạnh trên 500 mã lực — công nghệ và sang trọng không thỏa hiệp.",
-    price: "Giá từ 3,069 tỷ",
+    highlight: { vi: "Đẳng cấp tối thượng", en: "The pinnacle of luxury" },
+    description: {
+      vi: "SUV flagship 6 chỗ với sức mạnh trên 500 mã lực — công nghệ và sang trọng không thỏa hiệp.",
+      en: "The flagship 6-seat SUV with over 500 hp — technology and luxury without compromise.",
+    },
+    price: { vi: "Giá từ 3,069 tỷ", en: "From 3.069 billion VND" },
     silhouette: "suv",
     image: "/cars/lynk-co-900.jpeg",
   },
 ];
+
+const heroCopy = {
+  vi: {
+    srTitle:
+      "Lynk & Co Sài Gòn — Bảng giá xe Lynk & Co mới nhất, đăng ký lái thử miễn phí",
+    explore: "Khám phá mẫu xe",
+    testDrive: "Đăng ký lái thử",
+    carousel: "Giới thiệu Lynk & Co",
+    goToSlide: "Chuyển đến slide",
+    prev: "Slide trước",
+    next: "Slide sau",
+  },
+  en: {
+    srTitle:
+      "Lynk & Co Saigon — Latest Lynk & Co prices, book a free test drive",
+    explore: "Explore models",
+    testDrive: "Book a test drive",
+    carousel: "Lynk & Co introduction",
+    goToSlide: "Go to slide",
+    prev: "Previous slide",
+    next: "Next slide",
+  },
+};
 
 const AUTOPLAY_MS = 6000;
 
@@ -90,6 +137,8 @@ const contentVariants = {
 export function Hero() {
   const [[index, direction], setState] = useState<[number, number]>([0, 1]);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const { lang } = useLang();
+  const t = heroCopy[lang];
 
   const goTo = useCallback((next: number, dir: number) => {
     setState([(next + slides.length) % slides.length, dir]);
@@ -111,12 +160,9 @@ export function Hero() {
     <section
       className="relative overflow-hidden bg-neutral-950 text-white"
       aria-roledescription="carousel"
-      aria-label="Giới thiệu Lynk & Co"
+      aria-label={t.carousel}
     >
-      <h1 className="sr-only">
-        Lynk &amp; Co Sài Gòn — Bảng giá xe Lynk &amp; Co mới nhất, đăng ký lái
-        thử miễn phí
-      </h1>
+      <h1 className="sr-only">{t.srTitle}</h1>
 
       {/* Preload ảnh các slide để không bị nháy khi chuyển */}
       <div className="hidden" aria-hidden="true">
@@ -246,23 +292,23 @@ export function Hero() {
               className="relative z-10 max-w-2xl cursor-grab active:cursor-grabbing"
             >
               <p className="inline-block rounded-full border border-white/20 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.25em] text-white/80">
-                {slide.eyebrow}
+                {slide.eyebrow[lang]}
               </p>
 
               <p className="mt-6 text-4xl font-black leading-[1.02] tracking-tight sm:text-6xl md:text-7xl">
                 {slide.title}
               </p>
               <p className="mt-3 bg-gradient-to-r from-white via-white to-white/40 bg-clip-text text-2xl font-bold text-transparent sm:text-3xl md:text-4xl">
-                {slide.highlight}
+                {slide.highlight[lang]}
               </p>
 
               <p className="mt-6 max-w-xl text-base leading-relaxed text-white/60 sm:text-lg">
-                {slide.description}
+                {slide.description[lang]}
               </p>
 
               {slide.price && (
                 <p className="mt-5 inline-block rounded-full bg-white px-5 py-2 text-sm font-bold text-neutral-950">
-                  {slide.price}
+                  {slide.price[lang]}
                 </p>
               )}
 
@@ -273,7 +319,7 @@ export function Hero() {
                   size="lg"
                   className="h-12 rounded-full bg-white px-7 text-base font-semibold text-neutral-950 hover:bg-white/85"
                 >
-                  Khám phá mẫu xe
+                  {t.explore}
                 </Button>
                 <Button
                   render={<a href="#lai-thu" />}
@@ -282,7 +328,7 @@ export function Hero() {
                   variant="outline"
                   className="h-12 rounded-full border-white/30 bg-transparent px-7 text-base font-semibold text-white hover:bg-white/10 hover:text-white"
                 >
-                  Đăng ký lái thử
+                  {t.testDrive}
                   <ArrowRight className="size-4" />
                 </Button>
               </div>
@@ -297,7 +343,7 @@ export function Hero() {
                   key={s.code}
                   type="button"
                   onClick={() => goTo(i, i > index ? 1 : -1)}
-                  aria-label={`Chuyển đến slide ${s.title}`}
+                  aria-label={`${t.goToSlide} ${s.title}`}
                   aria-current={i === index}
                   className={cn(
                     "h-1.5 rounded-full transition-all duration-300",
@@ -312,7 +358,7 @@ export function Hero() {
               <button
                 type="button"
                 onClick={prev}
-                aria-label="Slide trước"
+                aria-label={t.prev}
                 className="flex size-11 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:bg-white hover:text-neutral-950"
               >
                 <ChevronLeft className="size-5" />
@@ -320,7 +366,7 @@ export function Hero() {
               <button
                 type="button"
                 onClick={next}
-                aria-label="Slide sau"
+                aria-label={t.next}
                 className="flex size-11 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:bg-white hover:text-neutral-950"
               >
                 <ChevronRight className="size-5" />

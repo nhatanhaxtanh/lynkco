@@ -1,4 +1,19 @@
+import type { Lang } from "@/lib/i18n";
+
 export type CarSpec = { label: string; value: string };
+
+/** Bản dịch tiếng Anh cho các trường hiển thị của một mẫu xe */
+export type CarEn = {
+  tagline: string;
+  bodyType: string;
+  powertrain: string;
+  power: string;
+  seats: string;
+  priceDisplay: string;
+  description: string;
+  specs: CarSpec[];
+  features: string[];
+};
 
 export type Car = {
   slug: string;
@@ -26,7 +41,13 @@ export type Car = {
   features: string[];
   anticipated?: boolean;
   featured?: boolean;
+  en: CarEn;
 };
+
+/** Trả về xe với các trường hiển thị theo ngôn ngữ đang chọn */
+export function localizeCar(car: Car, lang: Lang): Car {
+  return lang === "en" ? { ...car, ...car.en } : car;
+}
 
 export const cars: Car[] = [
   {
@@ -64,6 +85,36 @@ export const cars: Car[] = [
       "Sạc điện thoại không dây",
       "Đèn pha LED thích ứng tự động",
     ],
+    en: {
+      tagline: "Premium urban SUV — the model that started Lynk & Co",
+      bodyType: "C-segment SUV",
+      powertrain: "1.5L Turbo petrol",
+      power: "181 hp",
+      seats: "5 seats",
+      priceDisplay: "919 million",
+      description:
+        "The Lynk & Co 01 is the brand's founding C-segment SUV, built on the CMA platform co-developed with Volvo. Distinctive Scandinavian design, a spacious cabin and a full suite of active-safety technology make the 01 a standout choice in its class.",
+      specs: [
+        { label: "Dimensions L × W × H", value: "4,549 × 1,860 × 1,689 mm" },
+        { label: "Wheelbase", value: "2,734 mm" },
+        { label: "Engine", value: "1.5L Turbo petrol" },
+        { label: "Max power", value: "181 hp" },
+        { label: "Max torque", value: "265 Nm" },
+        { label: "Transmission", value: "7-speed dual-clutch (7DCT)" },
+        { label: "Drivetrain", value: "Front-wheel drive (FWD)" },
+        { label: "Seating", value: "5" },
+      ],
+      features: [
+        "CMA platform co-developed with Volvo",
+        "Full ADAS active-safety package",
+        "12.3-inch central touchscreen",
+        "Digital instrument cluster",
+        "Panoramic sunroof",
+        "Power leather seats with driver memory",
+        "Wireless phone charging",
+        "Adaptive LED headlights",
+      ],
+    },
   },
   {
     slug: "lynk-co-02",
@@ -98,6 +149,34 @@ export const cars: Car[] = [
       "Gói an toàn chủ động ADAS",
       "Nội thất tối giản phong cách Bắc Âu",
     ],
+    en: {
+      tagline: "All-electric coupe SUV for the new generation",
+      bodyType: "Coupe SUV",
+      powertrain: "Battery electric (EV)",
+      power: "272 hp",
+      seats: "5 seats",
+      priceDisplay: "899 million",
+      description:
+        "The Lynk & Co 02 is an all-electric coupe SUV with youthful styling, an engaging rear-wheel-drive character and impressive acceleration. The ideal choice for the modern city — zero emissions, zero noise.",
+      specs: [
+        { label: "Dimensions L × W × H", value: "4,460 × 1,845 × 1,573 mm" },
+        { label: "Wheelbase", value: "2,755 mm" },
+        { label: "Motor", value: "Single electric motor" },
+        { label: "Max power", value: "272 hp" },
+        { label: "Max torque", value: "343 Nm" },
+        { label: "Drivetrain", value: "Rear-wheel drive (RWD)" },
+        { label: "Range", value: "~530 km (CLTC)" },
+        { label: "Seating", value: "5" },
+      ],
+      features: [
+        "Fully electric — zero emissions, silent running",
+        "Rear-wheel drive for an engaging feel",
+        "DC fast charging, 30–80% in about 30 minutes",
+        "Large central display with voice assistant",
+        "ADAS active-safety package",
+        "Minimalist Nordic-style interior",
+      ],
+    },
   },
   {
     slug: "lynk-co-03-plus",
@@ -131,6 +210,34 @@ export const cars: Car[] = [
       "Ghế thể thao ôm thân người",
       "Ống xả kép thể thao",
     ],
+    en: {
+      tagline: "High-performance sedan with TCR racing DNA",
+      bodyType: "Sports sedan",
+      powertrain: "2.0L Turbo petrol AWD",
+      power: "254 hp",
+      seats: "5 seats",
+      priceDisplay: "1.899 billion",
+      description:
+        "The Lynk & Co 03+ inherits its DNA directly from the TCR World Tour championship-winning race car. A 2.0L Turbo engine, permanent all-wheel drive and an aerodynamic bodykit make the 03+ a rare high-performance sedan at its price point.",
+      specs: [
+        { label: "Dimensions L × W × H", value: "4,684 × 1,843 × 1,460 mm" },
+        { label: "Wheelbase", value: "2,730 mm" },
+        { label: "Engine", value: "2.0L Turbo petrol" },
+        { label: "Max power", value: "254 hp" },
+        { label: "Max torque", value: "350 Nm" },
+        { label: "Transmission", value: "8-speed automatic (8AT)" },
+        { label: "Drivetrain", value: "All-wheel drive (AWD)" },
+        { label: "0–100 km/h", value: "~6 seconds" },
+      ],
+      features: [
+        "DNA from the TCR World Tour champion race car",
+        "Aerodynamic bodykit with carbon rear wing",
+        "AWD with multiple drive modes",
+        "High-performance brakes, sport wheels",
+        "Body-hugging sport seats",
+        "Twin sport exhaust",
+      ],
+    },
   },
   {
     slug: "lynk-co-05",
@@ -164,6 +271,34 @@ export const cars: Car[] = [
       "Cốp điện rảnh tay",
       "Gói an toàn chủ động ADAS đầy đủ",
     ],
+    en: {
+      tagline: "A luxurious coupe SUV with European character",
+      bodyType: "Coupe SUV",
+      powertrain: "2.0L Turbo petrol",
+      power: "254 hp",
+      seats: "5 seats",
+      priceDisplay: "1.599 billion",
+      description:
+        "The Lynk & Co 05 pairs a captivating coupe-SUV silhouette with a punchy 254 hp 2.0L Turbo. A premium leather-trimmed cabin, excellent sound insulation and a long list of comfort features turn every journey into a first-class experience.",
+      specs: [
+        { label: "Dimensions L × W × H", value: "4,592 × 1,879 × 1,628 mm" },
+        { label: "Wheelbase", value: "2,734 mm" },
+        { label: "Engine", value: "2.0L Turbo petrol" },
+        { label: "Max power", value: "254 hp" },
+        { label: "Max torque", value: "350 Nm" },
+        { label: "Transmission", value: "8-speed automatic (8AT)" },
+        { label: "Drivetrain", value: "All-wheel drive (AWD)" },
+        { label: "Seating", value: "5" },
+      ],
+      features: [
+        "Sporty sloping-roof coupe SUV design",
+        "Premium leather interior, active noise insulation",
+        "Panoramic sunroof",
+        "Premium surround sound",
+        "Hands-free power tailgate",
+        "Full ADAS active-safety package",
+      ],
+    },
   },
   {
     slug: "lynk-co-06",
@@ -198,6 +333,34 @@ export const cars: Car[] = [
       "Đèn LED toàn xe với dải định vị đặc trưng",
       "Khoang hành lý linh hoạt",
     ],
+    en: {
+      tagline: "The dynamic B-segment SUV leading its class",
+      bodyType: "B-segment SUV",
+      powertrain: "1.5L Turbo petrol",
+      power: "181 hp",
+      seats: "5 seats",
+      priceDisplay: "679 million",
+      description:
+        "The Lynk & Co 06 is the most accessible way into the Lynk & Co world. A B-segment SUV with the most powerful engine in its class — a 181 hp 1.5L Turbo — bold design and equipment well above its price.",
+      specs: [
+        { label: "Dimensions L × W × H", value: "4,340 × 1,820 × 1,625 mm" },
+        { label: "Wheelbase", value: "2,640 mm" },
+        { label: "Engine", value: "1.5L Turbo petrol" },
+        { label: "Max power", value: "181 hp" },
+        { label: "Max torque", value: "290 Nm" },
+        { label: "Transmission", value: "7-speed dual-clutch (7DCT)" },
+        { label: "Drivetrain", value: "Front-wheel drive (FWD)" },
+        { label: "Seating", value: "5" },
+      ],
+      features: [
+        "Most powerful engine in the B-SUV segment",
+        "Large central display with smart connectivity",
+        "ADAS active-safety package",
+        "Sunroof and wireless charging",
+        "Full-LED lighting with signature DRLs",
+        "Flexible luggage compartment",
+      ],
+    },
   },
   {
     slug: "lynk-co-08",
@@ -233,6 +396,35 @@ export const cars: Car[] = [
       "ADAS cao cấp với hỗ trợ lái trên cao tốc",
       "Cửa sổ trời toàn cảnh, đèn viền nội thất",
     ],
+    en: {
+      tagline: "EM-P plug-in hybrid SUV — refined and remarkably efficient",
+      bodyType: "D-segment SUV",
+      powertrain: "EM-P plug-in hybrid",
+      power: "345 hp",
+      seats: "5 seats",
+      priceDisplay: "1.299 billion",
+      description:
+        "The Lynk & Co 08 features the EM-P plug-in hybrid powertrain with a combined 345 hp — powerful when you need it, efficient on every journey. Drive up to ~120 km on electricity alone for daily city use, with a total range of over 1,000 km.",
+      specs: [
+        { label: "Dimensions L × W × H", value: "4,820 × 1,915 × 1,685 mm" },
+        { label: "Wheelbase", value: "2,848 mm" },
+        { label: "Powertrain", value: "EM-P: 1.5L Turbo + electric motors" },
+        { label: "Combined power", value: "345 hp" },
+        { label: "Transmission", value: "3-speed DHT Pro" },
+        { label: "Drivetrain", value: "Front-wheel drive (FWD)" },
+        { label: "Electric range", value: "~120 km" },
+        { label: "Total range", value: "over 1,000 km" },
+      ],
+      features: [
+        "New-generation EM-P powertrain",
+        "Electric daily driving, no range anxiety on trips",
+        "Crisp 15.4-inch central display",
+        "Harman Kardon sound system",
+        "Massage, ventilated and heated seats",
+        "Advanced ADAS with highway assist",
+        "Panoramic sunroof, ambient lighting",
+      ],
+    },
   },
   {
     slug: "lynk-co-09",
@@ -266,6 +458,34 @@ export const cars: Car[] = [
       "Ghế da Nappa, hàng ghế 2 chỉnh điện",
       "ADAS đầy đủ với camera 360 độ",
     ],
+    en: {
+      tagline: "Full-size 7-seat SUV — the ultimate family experience",
+      bodyType: "E-segment SUV",
+      powertrain: "2.0L Turbo petrol AWD",
+      power: "254 hp",
+      seats: "7 seats",
+      priceDisplay: "2.199 billion",
+      description:
+        "The Lynk & Co 09 is an E-segment 7-seat SUV built on Volvo's SPA platform. Three spacious seat rows, assured 2.0L Turbo AWD performance and top-tier safety standards for the whole family.",
+      specs: [
+        { label: "Dimensions L × W × H", value: "5,042 × 1,977 × 1,780 mm" },
+        { label: "Wheelbase", value: "2,984 mm" },
+        { label: "Engine", value: "2.0L Turbo petrol" },
+        { label: "Max power", value: "254 hp" },
+        { label: "Max torque", value: "350 Nm" },
+        { label: "Transmission", value: "8-speed automatic (8AT)" },
+        { label: "Drivetrain", value: "All-wheel drive (AWD)" },
+        { label: "Seating", value: "7 (2+3+2)" },
+      ],
+      features: [
+        "SPA platform shared with the Volvo XC90",
+        "Three spacious rows seating 7 adults",
+        "Optional air suspension, premium insulation",
+        "Premium surround sound",
+        "Nappa leather, power second-row seats",
+        "Full ADAS with 360-degree camera",
+      ],
+    },
   },
   {
     slug: "lynk-co-900",
@@ -300,6 +520,35 @@ export const cars: Car[] = [
       "ADAS cao cấp nhất của Lynk & Co",
       "Âm thanh vòm tham chiếu cao cấp",
     ],
+    en: {
+      tagline: "Flagship 6-seat SUV — the pinnacle of technology and luxury",
+      bodyType: "Flagship SUV",
+      powertrain: "EM-P plug-in hybrid",
+      power: "500+ hp",
+      seats: "6 seats",
+      priceDisplay: "3.069 billion",
+      description:
+        "The Lynk & Co 900 is the flagship 6-seat SUV with an EM-P powertrain producing over 500 hp, a 2+2+2 business-class cabin and a suite of cutting-edge technology — Lynk & Co's boldest statement of luxury and refinement.",
+      specs: [
+        { label: "Dimensions L × W × H", value: "5,240 × 1,999 × 1,810 mm" },
+        { label: "Wheelbase", value: "3,160 mm" },
+        { label: "Powertrain", value: "EM-P: 2.0L Turbo + electric motors" },
+        { label: "Combined power", value: "over 500 hp" },
+        { label: "Drivetrain", value: "All-wheel drive (AWD)" },
+        { label: "Electric range", value: "~220 km (CLTC)" },
+        { label: "Seating", value: "6 (2+2+2)" },
+        { label: "Status", value: "Just launched — contact us to order" },
+      ],
+      features: [
+        "Business-class 2+2+2 six-seat cabin",
+        "Second row swivels 180 degrees, work table",
+        "Large entertainment screens for every row",
+        "EM-P powertrain with over 500 hp",
+        "Air suspension with adaptive dampers",
+        "Lynk & Co's most advanced ADAS",
+        "Reference-grade surround sound",
+      ],
+    },
   },
 ];
 

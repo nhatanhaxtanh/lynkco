@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Menu, Phone } from "lucide-react";
+import { useLang } from "@/components/language-provider";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -15,18 +16,54 @@ import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { href: "/#mau-xe", label: "Mẫu xe" },
-  { href: "/#uu-diem", label: "Ưu điểm" },
-  { href: "/#ban-giao", label: "Lễ bàn giao" },
-  { href: "/#showroom", label: "Showroom" },
-  { href: "/#tin-tuc", label: "Tin tức" },
-  { href: "/#lai-thu", label: "Đăng ký lái thử" },
-  { href: "/#lien-he", label: "Liên hệ" },
+  { href: "/#mau-xe", label: { vi: "Mẫu xe", en: "Models" } },
+  { href: "/#uu-diem", label: { vi: "Ưu điểm", en: "Why Lynk & Co" } },
+  { href: "/#ban-giao", label: { vi: "Lễ bàn giao", en: "Deliveries" } },
+  { href: "/#showroom", label: { vi: "Showroom", en: "Showroom" } },
+  { href: "/#tin-tuc", label: { vi: "Tin tức", en: "News" } },
+  { href: "/#lai-thu", label: { vi: "Đăng ký lái thử", en: "Test drive" } },
+  { href: "/#lien-he", label: { vi: "Liên hệ", en: "Contact" } },
 ];
+
+function LangToggle({ scrolled }: { scrolled: boolean }) {
+  const { lang, setLang } = useLang();
+  return (
+    <div
+      className={cn(
+        "flex items-center rounded-full border p-0.5",
+        scrolled ? "border-border" : "border-white/30",
+      )}
+      role="group"
+      aria-label="Ngôn ngữ / Language"
+    >
+      {(["vi", "en"] as const).map((code) => (
+        <button
+          key={code}
+          type="button"
+          onClick={() => setLang(code)}
+          aria-pressed={lang === code}
+          className={cn(
+            "rounded-full px-2.5 py-1 text-xs font-bold uppercase transition-colors",
+            lang === code
+              ? scrolled
+                ? "bg-neutral-950 text-white"
+                : "bg-white text-neutral-950"
+              : scrolled
+                ? "text-foreground/60 hover:text-foreground"
+                : "text-white/60 hover:text-white",
+          )}
+        >
+          {code}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { lang } = useLang();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -55,7 +92,10 @@ export function SiteHeader() {
           LYNK&nbsp;&amp;&nbsp;CO
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Chính">
+        <nav
+          className="hidden items-center gap-7 md:flex"
+          aria-label={lang === "en" ? "Main" : "Chính"}
+        >
           {navItems.map((item) => (
             <a
               key={item.href}
@@ -65,16 +105,18 @@ export function SiteHeader() {
                 scrolled ? "text-foreground" : "text-white"
               )}
             >
-              {item.label}
+              {item.label[lang]}
             </a>
           ))}
         </nav>
 
         <div className="flex items-center gap-3">
+          <LangToggle scrolled={scrolled} />
+
           <Button
             render={<a href={`tel:${siteConfig.hotline}`} />}
             nativeButton={false}
-            className="hidden rounded-full px-5 md:inline-flex"
+            className="hidden rounded-full px-5 lg:inline-flex"
             variant={scrolled ? "default" : "secondary"}
           >
             <Phone className="size-4" />
@@ -93,7 +135,7 @@ export function SiteHeader() {
                       ? "text-foreground"
                       : "text-white hover:bg-white/10 hover:text-white"
                   )}
-                  aria-label="Mở menu"
+                  aria-label={lang === "en" ? "Open menu" : "Mở menu"}
                 />
               }
             >
@@ -105,7 +147,10 @@ export function SiteHeader() {
                   LYNK &amp; CO
                 </SheetTitle>
               </SheetHeader>
-              <nav className="flex flex-col gap-1 px-4" aria-label="Menu di động">
+              <nav
+                className="flex flex-col gap-1 px-4"
+                aria-label={lang === "en" ? "Mobile menu" : "Menu di động"}
+              >
                 {navItems.map((item) => (
                   <a
                     key={item.href}
@@ -113,7 +158,7 @@ export function SiteHeader() {
                     onClick={() => setOpen(false)}
                     className="rounded-xl px-3 py-3 text-sm font-medium hover:bg-muted"
                   >
-                    {item.label}
+                    {item.label[lang]}
                   </a>
                 ))}
                 <Button

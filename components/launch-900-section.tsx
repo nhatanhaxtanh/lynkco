@@ -1,20 +1,48 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { useLang } from "@/components/language-provider";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/fade-in";
-import { getCar } from "@/lib/cars";
+import { getCar, localizeCar } from "@/lib/cars";
 
-const stats = [
-  { value: "500+", unit: "mã lực", label: "Hệ truyền động EM-P" },
-  { value: "~220", unit: "km", label: "Tầm chạy thuần điện" },
-  { value: "2+2+2", unit: "", label: "Khoang thương gia 6 chỗ" },
-  { value: "3.160", unit: "mm", label: "Chiều dài cơ sở" },
-];
+const copy = {
+  vi: {
+    badge: "Mới ra mắt",
+    priceFrom: "Giá từ",
+    currency: "VNĐ",
+    explore: "Khám phá Lynk & Co 900",
+    testDrive: "Đăng ký lái thử",
+    stats: [
+      { value: "500+", unit: "mã lực", label: "Hệ truyền động EM-P" },
+      { value: "~220", unit: "km", label: "Tầm chạy thuần điện" },
+      { value: "2+2+2", unit: "", label: "Khoang thương gia 6 chỗ" },
+      { value: "3.160", unit: "mm", label: "Chiều dài cơ sở" },
+    ],
+  },
+  en: {
+    badge: "Just launched",
+    priceFrom: "From",
+    currency: "VND",
+    explore: "Explore the Lynk & Co 900",
+    testDrive: "Book a test drive",
+    stats: [
+      { value: "500+", unit: "hp", label: "EM-P powertrain" },
+      { value: "~220", unit: "km", label: "Electric range" },
+      { value: "2+2+2", unit: "", label: "Business-class 6-seat cabin" },
+      { value: "3,160", unit: "mm", label: "Wheelbase" },
+    ],
+  },
+};
 
 export function Launch900Section() {
+  const { lang } = useLang();
+  const t = copy[lang];
   const car = getCar("lynk-co-900");
   if (!car) return null;
+  const c = localizeCar(car, lang);
 
   return (
     <section
@@ -49,7 +77,7 @@ export function Launch900Section() {
               <span className="absolute inline-flex size-full animate-ping rounded-full bg-red-400 opacity-75" />
               <span className="relative inline-flex size-2 rounded-full bg-red-500" />
             </span>
-            Mới ra mắt
+            {t.badge}
           </p>
         </FadeIn>
 
@@ -58,19 +86,19 @@ export function Launch900Section() {
             LYNK &amp; CO 900
           </h2>
           <p className="mt-3 max-w-2xl bg-gradient-to-r from-white via-white to-white/40 bg-clip-text text-xl font-bold text-transparent sm:text-3xl">
-            {car.tagline}
+            {c.tagline}
           </p>
         </FadeIn>
 
         <FadeIn delay={0.16}>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-white/60 sm:text-lg">
-            {car.description}
+            {c.description}
           </p>
         </FadeIn>
 
         <FadeIn delay={0.22}>
           <p className="mt-6 inline-block rounded-full bg-white px-5 py-2 text-sm font-bold text-neutral-950">
-            Giá từ {car.priceDisplay} VNĐ
+            {t.priceFrom} {c.priceDisplay} {t.currency}
           </p>
         </FadeIn>
 
@@ -82,7 +110,7 @@ export function Launch900Section() {
               size="lg"
               className="h-12 rounded-full bg-white px-7 text-base font-semibold text-neutral-950 hover:bg-white/85"
             >
-              Khám phá Lynk &amp; Co 900
+              {t.explore}
               <ArrowRight className="size-4" />
             </Button>
             <Button
@@ -92,7 +120,7 @@ export function Launch900Section() {
               variant="outline"
               className="h-12 rounded-full border-white/30 bg-transparent px-7 text-base font-semibold text-white hover:bg-white/10 hover:text-white"
             >
-              Đăng ký lái thử
+              {t.testDrive}
             </Button>
           </div>
         </FadeIn>
@@ -100,7 +128,7 @@ export function Launch900Section() {
         {/* Dải thông số nổi bật */}
         <FadeIn delay={0.34}>
           <dl className="mt-16 grid grid-cols-2 gap-x-8 gap-y-10 border-t border-white/10 pt-10 md:mt-20 md:grid-cols-4">
-            {stats.map((stat) => (
+            {t.stats.map((stat) => (
               <div key={stat.label}>
                 <dd className="text-3xl font-black tracking-tight sm:text-4xl">
                   {stat.value}

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { CalendarCheck, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useLang } from "@/components/language-provider";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -22,7 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { cars } from "@/lib/cars";
+import { cars, localizeCar } from "@/lib/cars";
 import { submitTestDrive } from "@/lib/leads";
 import { siteConfig } from "@/lib/site-config";
 
@@ -33,7 +34,70 @@ const OPEN_DELAY_MS = 2000;
 const REOPEN_DELAY_MS = 30_000;
 const FALLBACK_IMAGE = "/cars/lynk-co-08-hero.webp";
 
+const copy = {
+  vi: {
+    offerFrom: "Ưu đãi từ",
+    title: "Đăng ký lái thử miễn phí",
+    description:
+      "Để lại thông tin, tư vấn viên sẽ liên hệ xác nhận lịch lái thử trong 24h — hoàn toàn miễn phí, không ràng buộc.",
+    name: "Họ và tên",
+    namePlaceholder: "Nguyễn Văn A",
+    phone: "Số điện thoại",
+    phonePlaceholder: "09xx xxx xxx",
+    email: "Email",
+    emailPlaceholder: "ban@email.com",
+    model: "Mẫu xe quan tâm",
+    modelPlaceholder: "Chọn mẫu xe",
+    from: "từ",
+    note: "Ghi chú",
+    notePlaceholder: "Thời gian mong muốn, khu vực của bạn...",
+    submit: "Đăng ký lái thử ngay",
+    submitting: "Đang gửi...",
+    privacy: "Thông tin của bạn được bảo mật và chỉ dùng để liên hệ tư vấn.",
+    priceFrom: "Giá từ",
+    anticipated: " (dự kiến)",
+    currency: "VNĐ",
+    missingFields: "Vui lòng nhập họ tên và số điện thoại.",
+    invalidPhone: "Số điện thoại chưa đúng định dạng.",
+    success: "Đăng ký lái thử thành công!",
+    successDetail: (name: string, phone: string) =>
+      `Cảm ơn ${name}, tư vấn viên sẽ liên hệ bạn qua số ${phone} trong 24h.`,
+    genericError: "Không gửi được đăng ký, vui lòng thử lại.",
+  },
+  en: {
+    offerFrom: "An offer from",
+    title: "Book a free test drive",
+    description:
+      "Leave your details and a consultant will confirm your test-drive schedule within 24 hours — completely free, no obligation.",
+    name: "Full name",
+    namePlaceholder: "John Smith",
+    phone: "Phone number",
+    phonePlaceholder: "09xx xxx xxx",
+    email: "Email",
+    emailPlaceholder: "you@email.com",
+    model: "Model of interest",
+    modelPlaceholder: "Choose a model",
+    from: "from",
+    note: "Notes",
+    notePlaceholder: "Preferred time, your area...",
+    submit: "Book a test drive now",
+    submitting: "Sending...",
+    privacy: "Your details are kept private and used only to contact you.",
+    priceFrom: "From",
+    anticipated: " (expected)",
+    currency: "VND",
+    missingFields: "Please enter your name and phone number.",
+    invalidPhone: "The phone number format is not valid.",
+    success: "Test drive booked successfully!",
+    successDetail: (name: string, phone: string) =>
+      `Thank you ${name}, a consultant will contact you at ${phone} within 24 hours.`,
+    genericError: "Could not submit your request, please try again.",
+  },
+};
+
 export function TestDrivePopup() {
+  const { lang } = useLang();
+  const t = copy[lang];
   const featured = cars.find((car) => car.featured) ?? cars[0];
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -58,7 +122,10 @@ export function TestDrivePopup() {
     }
   }
 
-  const selectedCar = cars.find((car) => car.name === model) ?? featured;
+  const selectedCar = localizeCar(
+    cars.find((car) => car.name === model) ?? featured,
+    lang,
+  );
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -67,11 +134,11 @@ export function TestDrivePopup() {
     const phone = String(data.get("phone") ?? "").trim();
 
     if (!name || !phone) {
-      toast.error("Vui lòng nhập họ tên và số điện thoại.");
+      toast.error(t.missingFields);
       return;
     }
     if (!/^(0|\+84)\d{8,10}$/.test(phone.replaceAll(" ", ""))) {
-      toast.error("Số điện thoại chưa đúng định dạng.");
+      toast.error(t.invalidPhone);
       return;
     }
 
@@ -87,15 +154,16 @@ export function TestDrivePopup() {
     setSubmitting(false);
 
     if (!result.ok) {
-      toast.error(result.error);
+      // Thông báo lỗi từ server là tiếng Việt; tiếng Anh dùng câu chung
+      toast.error(lang === "vi" ? result.error : t.genericError);
       return;
     }
 
     // Đăng ký xong thì không làm phiền nữa trong phiên này
     window.sessionStorage.setItem(STORAGE_KEY, "1");
     setOpen(false);
-    toast.success("Đăng ký lái thử thành công!", {
-      description: `Cảm ơn ${name}, tư vấn viên sẽ liên hệ bạn qua số ${phone} trong 24h.`,
+    toast.success(t.success, {
+      description: t.successDetail(name, phone),
     });
   }
 
@@ -123,8 +191,8 @@ export function TestDrivePopup() {
               {selectedCar.name}
             </p>
             <p className="text-sm font-semibold text-white/80">
-              Giá từ {selectedCar.priceDisplay}
-              {selectedCar.anticipated ? " (dự kiến)" : ""} VNĐ
+              {t.priceFrom} {selectedCar.priceDisplay}
+              {selectedCar.anticipated ? t.anticipated : ""} {t.currency}
             </p>
           </div>
         </div>
@@ -133,26 +201,23 @@ export function TestDrivePopup() {
         <div className="p-6 sm:p-8">
           <DialogHeader>
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-              Ưu đãi từ {siteConfig.name}
+              {t.offerFrom} {siteConfig.name}
             </p>
             <DialogTitle className="text-2xl font-black tracking-tight">
-              Đăng ký lái thử miễn phí
+              {t.title}
             </DialogTitle>
-            <DialogDescription>
-              Để lại thông tin, tư vấn viên sẽ liên hệ xác nhận lịch lái thử
-              trong 24h — hoàn toàn miễn phí, không ràng buộc.
-            </DialogDescription>
+            <DialogDescription>{t.description}</DialogDescription>
           </DialogHeader>
 
           <form onSubmit={handleSubmit} className="mt-6 grid gap-4" noValidate>
             <div className="grid gap-2">
               <Label htmlFor="popup-name">
-                Họ và tên <span className="text-destructive">*</span>
+                {t.name} <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="popup-name"
                 name="name"
-                placeholder="Nguyễn Văn A"
+                placeholder={t.namePlaceholder}
                 autoComplete="name"
                 required
                 className="h-11 rounded-xl"
@@ -162,25 +227,25 @@ export function TestDrivePopup() {
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="grid gap-2">
                 <Label htmlFor="popup-phone">
-                  Số điện thoại <span className="text-destructive">*</span>
+                  {t.phone} <span className="text-destructive">*</span>
                 </Label>
                 <Input
                   id="popup-phone"
                   name="phone"
                   type="tel"
-                  placeholder="09xx xxx xxx"
+                  placeholder={t.phonePlaceholder}
                   autoComplete="tel"
                   required
                   className="h-11 rounded-xl"
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="popup-email">Email</Label>
+                <Label htmlFor="popup-email">{t.email}</Label>
                 <Input
                   id="popup-email"
                   name="email"
                   type="email"
-                  placeholder="ban@email.com"
+                  placeholder={t.emailPlaceholder}
                   autoComplete="email"
                   className="h-11 rounded-xl"
                 />
@@ -188,18 +253,18 @@ export function TestDrivePopup() {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="popup-model">Mẫu xe quan tâm</Label>
+              <Label htmlFor="popup-model">{t.model}</Label>
               <Select
                 value={model}
                 onValueChange={(value) => setModel(value ?? featured.name)}
               >
                 <SelectTrigger id="popup-model" className="h-11 w-full rounded-xl">
-                  <SelectValue placeholder="Chọn mẫu xe" />
+                  <SelectValue placeholder={t.modelPlaceholder} />
                 </SelectTrigger>
                 <SelectContent>
                   {cars.map((car) => (
                     <SelectItem key={car.slug} value={car.name}>
-                      {car.name} — từ {car.priceDisplay}
+                      {car.name} — {t.from} {localizeCar(car, lang).priceDisplay}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -207,11 +272,11 @@ export function TestDrivePopup() {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="popup-note">Ghi chú</Label>
+              <Label htmlFor="popup-note">{t.note}</Label>
               <Textarea
                 id="popup-note"
                 name="note"
-                placeholder="Thời gian mong muốn, khu vực của bạn..."
+                placeholder={t.notePlaceholder}
                 rows={2}
                 className="rounded-xl"
               />
@@ -226,17 +291,17 @@ export function TestDrivePopup() {
               {submitting ? (
                 <>
                   <Loader2 className="size-4 animate-spin" />
-                  Đang gửi...
+                  {t.submitting}
                 </>
               ) : (
                 <>
                   <CalendarCheck className="size-4" />
-                  Đăng ký lái thử ngay
+                  {t.submit}
                 </>
               )}
             </Button>
             <p className="text-center text-xs text-muted-foreground">
-              Thông tin của bạn được bảo mật và chỉ dùng để liên hệ tư vấn.
+              {t.privacy}
             </p>
           </form>
         </div>

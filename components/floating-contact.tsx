@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUp, Phone } from "lucide-react";
+import { useLang } from "@/components/language-provider";
 import { siteConfig } from "@/lib/site-config";
 
 function FacebookIcon({ className }: { className?: string }) {
@@ -16,14 +17,17 @@ function FacebookIcon({ className }: { className?: string }) {
 const contacts = [
   {
     href: `tel:${siteConfig.hotline}`,
-    label: `Gọi hotline ${siteConfig.hotlineDisplay}`,
+    label: {
+      vi: `Gọi hotline ${siteConfig.hotlineDisplay}`,
+      en: `Call hotline ${siteConfig.hotlineDisplay}`,
+    },
     className: "bg-neutral-950 text-white hover:bg-neutral-800",
     pulseClassName: "bg-neutral-950/40",
     icon: <Phone className="size-6" />,
   },
   {
     href: siteConfig.zalo,
-    label: "Nhắn tin Zalo",
+    label: { vi: "Nhắn tin Zalo", en: "Chat on Zalo" },
     className: "bg-[#0068ff] text-white hover:bg-[#0055d4]",
     pulseClassName: "bg-[#0068ff]/40",
     icon: <span className="text-sm font-black tracking-tight">Zalo</span>,
@@ -31,7 +35,7 @@ const contacts = [
   },
   {
     href: siteConfig.facebook,
-    label: "Facebook Messenger",
+    label: { vi: "Facebook Messenger", en: "Facebook Messenger" },
     className: "bg-[#1877f2] text-white hover:bg-[#145fc4]",
     pulseClassName: "bg-[#1877f2]/40",
     icon: <FacebookIcon className="size-6" />,
@@ -41,6 +45,7 @@ const contacts = [
 
 export function FloatingContact() {
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const { lang } = useLang();
 
   useEffect(() => {
     const onScroll = () => setShowScrollTop(window.scrollY > 500);
@@ -55,8 +60,8 @@ export function FloatingContact() {
         {showScrollTop && (
           <motion.button
             type="button"
-            aria-label="Cuộn lên đầu trang"
-            title="Lên đầu trang"
+            aria-label={lang === "en" ? "Scroll to top" : "Cuộn lên đầu trang"}
+            title={lang === "en" ? "Back to top" : "Lên đầu trang"}
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             initial={{ opacity: 0, scale: 0, y: 12 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -74,8 +79,8 @@ export function FloatingContact() {
         <motion.a
           key={contact.href}
           href={contact.href}
-          aria-label={contact.label}
-          title={contact.label}
+          aria-label={contact.label[lang]}
+          title={contact.label[lang]}
           target={contact.external ? "_blank" : undefined}
           rel={contact.external ? "noopener noreferrer" : undefined}
           initial={{ opacity: 0, scale: 0, x: 24 }}

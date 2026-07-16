@@ -1,22 +1,40 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, CalendarDays, Newspaper } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/fade-in";
-import { formatDate, newsPosts } from "@/lib/news";
+import { useLang } from "@/components/language-provider";
+import { categoryLabel, formatDate, localizePost, newsPosts } from "@/lib/news";
+
+const copy = {
+  vi: {
+    eyebrow: "Cập nhật mới nhất",
+    heading: "Tin tức & Sự kiện",
+    readMore: "Đọc tiếp",
+  },
+  en: {
+    eyebrow: "Latest updates",
+    heading: "News & Events",
+    readMore: "Read more",
+  },
+};
 
 export function NewsSection() {
-  const posts = newsPosts.slice(0, 3);
+  const { lang } = useLang();
+  const t = copy[lang];
+  const posts = newsPosts.slice(0, 3).map((post) => localizePost(post, lang));
 
   return (
     <section id="tin-tuc" className="bg-background py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <FadeIn>
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-            Cập nhật mới nhất
+            {t.eyebrow}
           </p>
           <h2 className="mt-3 max-w-2xl text-3xl font-black tracking-tight sm:text-4xl md:text-5xl">
-            Tin tức &amp; Sự kiện
+            {t.heading}
           </h2>
         </FadeIn>
 
@@ -42,14 +60,14 @@ export function NewsSection() {
                     </div>
                   )}
                   <Badge className="absolute left-4 top-4 rounded-full bg-white text-neutral-950 hover:bg-white">
-                    {post.category}
+                    {categoryLabel(post.category, lang)}
                   </Badge>
                 </div>
 
                 <div className="flex flex-1 flex-col p-6">
                   <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
                     <CalendarDays className="size-3.5" />
-                    {formatDate(post.date)}
+                    {formatDate(post.date, lang)}
                   </p>
                   <h3 className="mt-3 line-clamp-2 text-lg font-bold leading-snug tracking-tight">
                     {post.title}
@@ -58,7 +76,7 @@ export function NewsSection() {
                     {post.excerpt}
                   </p>
                   <span className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold">
-                    Đọc tiếp
+                    {t.readMore}
                     <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                   </span>
                 </div>
