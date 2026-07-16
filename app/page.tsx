@@ -84,8 +84,8 @@ export default function HomePage() {
         <FeaturesSection />
         <DeliverySection />
         <ShowroomSection />
-        <NewsSection />
         <TestDriveForm />
+        <NewsSection />
       </main>
       <SiteFooter />
       <FloatingContact />
