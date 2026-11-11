@@ -1,4 +1,3 @@
-import { DeliverySection } from "@/components/delivery-section";
 import { FeaturesSection } from "@/components/features-section";
 import { FloatingContact } from "@/components/floating-contact";
 import { Hero } from "@/components/hero";
@@ -27,7 +26,7 @@ function StructuredData() {
       addressCountry: "VN",
     },
     openingHours: "Mo-Su 08:00-19:00",
-    sameAs: [siteConfig.facebook, siteConfig.zalo, siteConfig.youtube],
+    sameAs: [siteConfig.zalo, siteConfig.youtube],
   };
 
   const carList = {
@@ -82,7 +81,6 @@ export default function HomePage() {
         <ModelsSection />
         <Launch900Section />
         <FeaturesSection />
-        <DeliverySection />
         <ShowroomSection />
         <TestDriveForm />
         <NewsSection />

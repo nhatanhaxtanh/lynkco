@@ -18,7 +18,6 @@ import { cn } from "@/lib/utils";
 const navItems = [
   { href: "/#mau-xe", label: { vi: "Mẫu xe", en: "Models" } },
   { href: "/#uu-diem", label: { vi: "Ưu điểm", en: "Why Lynk & Co" } },
-  { href: "/#ban-giao", label: { vi: "Lễ bàn giao", en: "Deliveries" } },
   { href: "/#showroom", label: { vi: "Showroom", en: "Showroom" } },
   { href: "/#tin-tuc", label: { vi: "Tin tức", en: "News" } },
   { href: "/#lai-thu", label: { vi: "Đăng ký lái thử", en: "Test drive" } },

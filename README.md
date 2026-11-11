@@ -1,6 +1,6 @@
 # Lynk & Co Sài Gòn — Website giới thiệu & báo giá xe
 
-Landing page chuẩn SEO cho đại lý Lynk & Co: bảng giá 8 mẫu xe, form đăng ký lái thử, nút liên hệ nhanh (Hotline / Zalo / Facebook). Tone trắng–đen hiện đại, bo góc mềm mại.
+Landing page chuẩn SEO cho đại lý Lynk & Co: bảng giá 8 mẫu xe, form đăng ký lái thử, nút liên hệ nhanh (Hotline / Zalo). Tone trắng–đen hiện đại, bo góc mềm mại.
 
 ## Công nghệ
 
@@ -29,7 +29,7 @@ npm run build    # build production
 
 | Nội dung | File |
 |---|---|
-| Hotline, địa chỉ, link Zalo/Facebook | `lib/site-config.ts` |
+| Hotline, email, địa chỉ, link Zalo | `lib/site-config.ts` |
 | Danh sách mẫu xe & giá | `lib/cars.ts` |
 | Ảnh thumbnail xe | Đặt file vào `public/cars/` rồi khai báo `image: "/cars/ten-file.jpg"` cho từng xe trong `lib/cars.ts` (chưa có ảnh sẽ hiển thị placeholder) |
 | Form lái thử (nối API/CRM) | `components/test-drive-form.tsx` |

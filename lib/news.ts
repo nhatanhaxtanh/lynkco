@@ -21,6 +21,8 @@ export type NewsPost = {
   /** Nội dung bài viết, mỗi phần tử là một đoạn văn */
   content: string[];
   en: NewsPostEn;
+  /** Ẩn bài khỏi trang chủ, sitemap và trang chi tiết (404) */
+  hidden?: boolean;
 };
 
 const categoryEn: Record<NewsCategory, string> = {
@@ -39,7 +41,7 @@ export function categoryLabel(category: NewsCategory, lang: Lang): string {
   return lang === "en" ? categoryEn[category] : category;
 }
 
-export const newsPosts: NewsPost[] = [
+const allNewsPosts: NewsPost[] = [
   {
     slug: "lynk-co-900-sap-ra-mat-nhan-dat-coc",
     title: "Lynk & Co 900 sắp ra mắt Việt Nam — nhận đặt cọc sớm với ưu đãi đặc biệt",
@@ -96,6 +98,7 @@ export const newsPosts: NewsPost[] = [
   },
   {
     slug: "nhung-le-ban-giao-dau-tien",
+    hidden: true,
     title: "Những lễ bàn giao đầu tiên tại Lynk & Co Sài Gòn — niềm vui lan tỏa",
     excerpt:
       "Không khí rộn ràng tại showroom khi những chiếc Lynk & Co 06 và 08 đầu tiên chính thức đến tay khách hàng trong nghi thức bàn giao trang trọng.",
@@ -148,6 +151,8 @@ export const newsPosts: NewsPost[] = [
     },
   },
 ];
+
+export const newsPosts = allNewsPosts.filter((post) => !post.hidden);
 
 export function getPost(slug: string): NewsPost | undefined {
   return newsPosts.find((post) => post.slug === slug);

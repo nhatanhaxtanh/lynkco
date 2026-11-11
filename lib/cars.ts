@@ -125,8 +125,8 @@ export const cars: Car[] = [
     powertrain: "Thuần điện (EV)",
     power: "272 mã lực",
     seats: "5 chỗ",
-    price: 899_000_000,
-    priceDisplay: "899 triệu",
+    price: 898_000_000,
+    priceDisplay: "898 triệu",
     image: "/cars/lynk-co-02.jpg",
     anticipated: true,
     description:
@@ -155,7 +155,7 @@ export const cars: Car[] = [
       powertrain: "Battery electric (EV)",
       power: "272 hp",
       seats: "5 seats",
-      priceDisplay: "899 million",
+      priceDisplay: "898 million",
       description:
         "The Lynk & Co 02 is an all-electric coupe SUV with youthful styling, an engaging rear-wheel-drive character and impressive acceleration. The ideal choice for the modern city — zero emissions, zero noise.",
       specs: [
@@ -309,8 +309,8 @@ export const cars: Car[] = [
     powertrain: "Xăng 1.5L Turbo",
     power: "181 mã lực",
     seats: "5 chỗ",
-    price: 679_000_000,
-    priceDisplay: "679 triệu",
+    price: 689_000_000,
+    priceDisplay: "689 triệu",
     image: "/cars/lynk-co-06.jpg",
     featured: true,
     description:
@@ -339,7 +339,7 @@ export const cars: Car[] = [
       powertrain: "1.5L Turbo petrol",
       power: "181 hp",
       seats: "5 seats",
-      priceDisplay: "679 million",
+      priceDisplay: "689 million",
       description:
         "The Lynk & Co 06 is the most accessible way into the Lynk & Co world. A B-segment SUV with the most powerful engine in its class — a 181 hp 1.5L Turbo — bold design and equipment well above its price.",
       specs: [
@@ -371,8 +371,8 @@ export const cars: Car[] = [
     powertrain: "Plug-in Hybrid EM-P",
     power: "345 mã lực",
     seats: "5 chỗ",
-    price: 1_299_000_000,
-    priceDisplay: "1,299 tỷ",
+    price: 1_389_000_000,
+    priceDisplay: "1,389 tỷ",
     image: "/cars/lynk-co-08.webp",
     featured: true,
     description:
@@ -402,7 +402,7 @@ export const cars: Car[] = [
       powertrain: "EM-P plug-in hybrid",
       power: "345 hp",
       seats: "5 seats",
-      priceDisplay: "1.299 billion",
+      priceDisplay: "1.389 billion",
       description:
         "The Lynk & Co 08 features the EM-P plug-in hybrid powertrain with a combined 345 hp — powerful when you need it, efficient on every journey. Drive up to ~120 km on electricity alone for daily city use, with a total range of over 1,000 km.",
       specs: [

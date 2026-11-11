@@ -16,7 +16,6 @@ const copy = {
     priceList: "Bảng giá xe",
     testDrive: "Đăng ký lái thử",
     why: "Vì sao chọn Lynk & Co",
-    deliveries: "Lễ bàn giao xe",
     showroom: "Showroom",
     news: "Tin tức & Sự kiện",
     disclaimer:
@@ -31,7 +30,6 @@ const copy = {
     priceList: "Price list",
     testDrive: "Book a test drive",
     why: "Why Lynk & Co",
-    deliveries: "Delivery ceremonies",
     showroom: "Showroom",
     news: "News & Events",
     disclaimer:
@@ -115,11 +113,6 @@ export function SiteFooter() {
                 </a>
               </li>
               <li>
-                <a href="#ban-giao" className="hover:text-white">
-                  {t.deliveries}
-                </a>
-              </li>
-              <li>
                 <a href="#showroom" className="hover:text-white">
                   {t.showroom}
                 </a>
@@ -127,16 +120,6 @@ export function SiteFooter() {
               <li>
                 <a href="/#tin-tuc" className="hover:text-white">
                   {t.news}
-                </a>
-              </li>
-              <li>
-                <a
-                  href={siteConfig.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-white"
-                >
-                  Facebook
                 </a>
               </li>
               <li>
